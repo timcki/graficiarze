@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <script src="3.js"></script>
+    <title>3</title>
+  </head>
+  <body>
+    <div>
+        <label for="nodes">Number of nodes: </label>
+        <input id="nodes" type="number"> <br/>
+        <label for="edges">Number of edges: </label>
+        <input id="edges" type="number"> <br/>
+        <button onclick="gen_n_l()">Generate G(n,l)</button>
+    </div>
+    <div>
+        <label for="nodes2">Number of nodes: </label>
+        <input id="nodes2" type="number"> <br/>
+        <label for="prob">Probability: </label>
+        <input id="prob" type="number" min=0 max=1> <br/>
+        <button onclick="gen_n_p()">Generate G(n,p)</button>
+    </div>
+    <div id="result">
+        
+    </div>
+  </body>
+</html>
