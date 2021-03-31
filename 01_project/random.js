@@ -65,13 +65,12 @@ function print_matrix(a, b, matrix) {
     table += "<thead>";
     table += "<th></th>";
 
-    for (j = 0; j < b; j++) table += "<th>" + (j+1) + "</th>";
+    for (j = 0; j < b; j++) table += "<th>" + j + "</th>";
     table += "</thead>";
 
-    let line = 1;
     for (i = 0; i < a; i++) {
         table += "<tr>";
-        table += "<td><b>" + line++ + "</b></td>";
+        table += "<td><b>" + i + "</b></td>";
         for (j = 0; j < b; j++)
             table += ("<td>"+ matrix[i][j] + "</td>");
         table += "</tr>";
