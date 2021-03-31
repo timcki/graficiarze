@@ -1,7 +1,7 @@
 function gen_n_l() {
 
-    n = document.getElementById("nodes").value
-    l = document.getElementById("edges").value
+    let n = Number(document.getElementById("nodes").value)
+    let l = Number(document.getElementById("edges").value)
 
     if (n < 0 || l < 0) {
         alert("Podaj liczby większe od 0")
@@ -13,8 +13,8 @@ function gen_n_l() {
         return
     }
 
-    var matrix = getMatrix(n, l) // Macierz incydencji
-    var nodes = getMatrix(n, n) // Macierz, w ktorej 1 oznacza, ze pomiedzy dwoma wierzcholkami jest juz krawedz
+    var matrix = get_matrix(n, l) // Macierz incydencji
+    var nodes = get_matrix(n, n) // Macierz, w ktorej 1 oznacza, ze pomiedzy dwoma wierzcholkami jest juz krawedz
 
     for (j = 0; j < l; j++) {
         do {
@@ -26,51 +26,36 @@ function gen_n_l() {
         matrix[x][j] = 1; matrix[y][j] = 1;
     }
 
-    printMatrix(n, l, matrix)
+    print_matrix(n, l, matrix);
 
-    return matrix
+    //graph = new Graph(null, matrix, null)
+
 }
 
 function gen_n_p() {
    
-    n = document.getElementById("nodes2").value
-    p = document.getElementById("prob").value
+    let n = Number(document.getElementById("nodes2").value)
+    let p = Number(document.getElementById("prob").value)
 
     if (n < 0 || p < 0 || p > 1) {
         alert("Podaj n większe od 0, p z przedziału [0, 1]")
         return
     }
 
-    var matrix = getMatrix(n, n) // Macierz sasiedztwa
+    let matrix = get_matrix(n, n) // Macierz sasiedztwa
 
     for (i = 0; i < n; i++)
         for (j = i+1; j < n; j++)
-            if (Math.random() <= p) matrix[i][j] = 1
+            matrix[i][j] = matrix[j][i] = +(Math.random() <= p);
 
-    for (i = 0; i < n; i++)
-        for (j = 0; j < i; j++)
-            matrix[i][j] = matrix[j][i]
 
-    printMatrix(n, n, matrix)
+    print_matrix(n, n, matrix);
+    graph = new Graph(matrix, null, null);
 
-    return matrix
 }
 
-function getMatrix(a, b) {
-    var arr = Array.from(Array(a), () => Array(b));
-    var matrix = new Array(a)
 
-    for (i = 0; i < a; i++) {
-        matrix[i] = []
-        for (j = 0; j < b; j++)
-            matrix[i].push(0)
-    }
-    console.log(arr);
-
-    return matrix
-}
-
-function printMatrix(a, b, matrix) {
+function print_matrix(a, b, matrix) {
     const result = document.getElementById("result")
     let table = "";
     table += "<button onclick=draw_graph()>Draw graph</button><table><tbody>";
