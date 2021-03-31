@@ -13,28 +13,18 @@ function gen_n_l() {
         return
     }
 
-    //macierz incydencji
-    var matrix = getMatrix(n, l)
-    
-    //macierz, w ktorej 1 oznacza, ze pomiedzy dwoma wierzcholkami jest juz krawedz
-    var nodes = getMatrix(n, n)
+    var matrix = getMatrix(n, l) // Macierz incydencji
+    var nodes = getMatrix(n, n) // Macierz, w ktorej 1 oznacza, ze pomiedzy dwoma wierzcholkami jest juz krawedz
 
     for (j = 0; j < l; j++) {
-
         do {
             x = Math.floor(Math.random() * Math.floor(n));
-            do {
-                y = Math.floor(Math.random() * Math.floor(n));
-            } while(y === x)
-        } while(nodes[x][y] === 1)
+            do { y = Math.floor(Math.random() * Math.floor(n)); } while (y === x)
+        } while (nodes[x][y] === 1)
 
-        nodes[x][y] = 1;
-        nodes[y][x] = 1;
-        matrix[x][j] = 1;
-        matrix[y][j] = 1;
+        nodes[x][y] = 1; nodes[y][x] = 1;
+        matrix[x][j] = 1; matrix[y][j] = 1;
     }
-
-    console.log(matrix)
 
     printMatrix(n, l, matrix)
 
@@ -51,24 +41,15 @@ function gen_n_p() {
         return
     }
 
-    //macierz sasiedztwa
-    var matrix = getMatrix(n, n)
+    var matrix = getMatrix(n, n) // Macierz sasiedztwa
 
-    for (i = 0; i < n; i++) {
-        for (j = i+1; j < n; j++) {
-            if (Math.random() <= p) {
-                matrix[i][j] = 1
-            }
-        }
-    }
+    for (i = 0; i < n; i++)
+        for (j = i+1; j < n; j++)
+            if (Math.random() <= p) matrix[i][j] = 1
 
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < i; j++) {
+    for (i = 0; i < n; i++)
+        for (j = 0; j < i; j++)
             matrix[i][j] = matrix[j][i]
-        }
-    }
-
-    console.log(matrix)
 
     printMatrix(n, n, matrix)
 
@@ -76,29 +57,38 @@ function gen_n_p() {
 }
 
 function getMatrix(a, b) {
+    var arr = Array.from(Array(a), () => Array(b));
     var matrix = new Array(a)
 
     for (i = 0; i < a; i++) {
         matrix[i] = []
-        for (j = 0; j < b; j++) {
+        for (j = 0; j < b; j++)
             matrix[i].push(0)
-        }
     }
+    console.log(arr);
 
     return matrix
 }
 
 function printMatrix(a, b, matrix) {
-    result = document.getElementById("result")
+    const result = document.getElementById("result")
+    let table = "";
+    table += "<button onclick=draw_graph()>Draw graph</button><table><tbody>";
+    table += "<thead>";
+    table += "<th></th>";
 
-    result.innerHTML = "<pre>";
+    for (j = 0; j < b; j++) table += "<th>" + (j+1) + "</th>";
+    table += "</thead>";
 
+    let line = 1;
     for (i = 0; i < a; i++) {
-        for (j = 0; j < b; j++) {
-            result.innerHTML += matrix[i][j] + " "
-        }
-        result.innerHTML += "<br/>"
+        table += "<tr>";
+        table += "<td><b>" + line++ + "</b></td>";
+        for (j = 0; j < b; j++)
+            table += ("<td>"+ matrix[i][j] + "</td>");
+        table += "</tr>";
     }
 
-    result.innerHTML += "</pre>"
+    table += "</tbody></table>"
+    result.innerHTML = table;
 }
