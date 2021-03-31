@@ -1,3 +1,5 @@
+window.graph = null;
+
 function gen_n_l() {
 
     let n = Number(document.getElementById("nodes").value)
@@ -28,7 +30,7 @@ function gen_n_l() {
 
     print_matrix(n, l, matrix);
 
-    //graph = new Graph(null, matrix, null)
+    window.graph = new Graph(n, null, matrix, null)
 
 }
 
@@ -50,8 +52,9 @@ function gen_n_p() {
 
 
     print_matrix(n, n, matrix);
-    graph = new Graph(matrix, null, null);
-
+    window.graph = new Graph(n, matrix, null, null);
+    console.log(window.graph.test());
+    window.graph.get_pairs();
 }
 
 

@@ -3,18 +3,23 @@ function draw_graph() {
     document.getElementById("result").innerHTML = "";
     //document.getElementById(
     // Generate the coordinates of the circles
-    const points = gen_points(28);
+
+    const points = gen_points(window.graph.nodes);
 
     // Init canvas and center it
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
 
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
+    context.save();
     context.translate(cx, cy);
 
     draw_edges(points, context);
     draw_nodes(points, context);
+    context.restore();
 }
 
 function gen_points(number) {
@@ -37,13 +42,19 @@ function draw_nodes(points, context) {
     const r = 25; // Radius of the node
     points.forEach((val, i, arr) => {
       draw_circle(val[0], val[1], r, context);
-      draw_text(val[0], val[1], (i+1).toString(), context);
+      draw_text(val[0], val[1], i.toString(), context);
     });
 
 }
 
 function draw_edges(points, context) {
-    points.forEach((val, i, arr) => draw_line(0, 0, val[0], val[1], context));
+    const edges = window.graph.get_pairs();
+    edges.forEach((val, i, arr) => {
+      let n1 = val[0];
+      let n2 = val[1];
+      draw_line(points[n1][0], points[n1][1], points[n2][0], points[n2][1], context);
+    })
+    //points.forEach((val, i, arr) => draw_line(0, 0, val[0], val[1], context));
 
 }
 
