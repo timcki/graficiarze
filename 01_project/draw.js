@@ -1,9 +1,20 @@
 function draw_graph() {
+    // Set the content of the table to blank
     document.getElementById("result").innerHTML = "";
     //document.getElementById(
-    const points = gen_points(18);
-    draw_edges(points);
-    draw_nodes(points);
+    // Generate the coordinates of the circles
+    const points = gen_points(28);
+
+    // Init canvas and center it
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    context.translate(cx, cy);
+
+    draw_edges(points, context);
+    draw_nodes(points, context);
 }
 
 function gen_points(number) {
@@ -21,33 +32,52 @@ function gen_points(number) {
     return points
 }
 
-function draw_nodes(points) {
-    const canvas = document.getElementById('canvas');
-    const context = canvas.getContext('2d');
+function draw_nodes(points, context) {
 
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
-    const r = 25;
-
-    context.translate(cx, cy);
-    points.forEach((val, i, arr) => draw_circle(val[0], val[1], r, context));
+    const r = 25; // Radius of the node
+    points.forEach((val, i, arr) => {
+      draw_circle(val[0], val[1], r, context);
+      draw_text(val[0], val[1], (i+1).toString(), context);
+    });
 
 }
 
-function draw_edges(points) {
+function draw_edges(points, context) {
+    points.forEach((val, i, arr) => draw_line(0, 0, val[0], val[1], context));
+
+}
+
+function draw_text(x, y, text, context) {
+  y += 8; 
+  console.log(text, text.length)
+  if (text.length == 1) x -= 5;
+  else x-= 10;
+
+  context.save();
+    context.font = "20px Arial";
+    context.fillText(text, x, y);
+  context.restore();
 }
 
 function draw_circle(x,y,r,context){
       context.save();
-          context.translate(x, y);
-          context.beginPath();
-          context.arc(0, 0, r, 0, 2*Math.PI, false);
-          context.fillStyle = '#a1b56c';
-          context.fill();
-          context.lineWidth = 3;
-          context.strokeStyle = '#f7ca88';
-          context.stroke();
+        context.beginPath();
+        context.arc(x, y, r, 0, 2*Math.PI, false);
+        context.fillStyle = '#a1b56c';
+        context.fill();
+        context.lineWidth = 3;
+        context.strokeStyle = '#f7ca88';
+        context.stroke();
       context.restore();
+}
+
+function draw_line(x0, y0, x1, y1, context) {
+  context.save();
+    context.beginPath();
+    context.moveTo(x0, y0);
+    context.lineTo(x1, y1)
+    context.stroke();
+  context.restore();
 }
 
 function deg2rad(degrees) {
