@@ -1,6 +1,6 @@
 function draw_graph() {
     document.getElementById("result").innerHTML = "";
-    document.getElementById(
+    //document.getElementById(
     const points = gen_points(18);
     draw_edges(points);
     draw_nodes(points);
