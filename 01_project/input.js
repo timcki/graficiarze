@@ -89,8 +89,15 @@ function create_inc_graph(){
         for(let j = 0; j < l; j++)
             inc[j][i] = Number(document.getElementById(String(i) + ',' + String(j) + 'I').value);
 
+    for(let edge = 0; edge < l; edge++)
+        for(let previous = 0; previous < edge; previous++)
+            if(inc[previous].toString() == inc[edge].toString()){
+                alert("Edge defined twice! Edges: " + previous + ', ' + edge);
+                return;
+            }
+                
+
     for(let i = 0; i < inc.length; i++){
-        console.log(inc[i])
         if(inc[i].reduce((a,b) => Number(a) + Number(b)) != 2){
             alert("Edge number: " + i + " doesn't link 2 nodes. Correct this in order to proceed.");
             return
