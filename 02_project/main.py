@@ -1,5 +1,6 @@
 import random
 from components import Components 
+from euler import euler
 
 def main():
 	tries = 200
@@ -9,7 +10,8 @@ def main():
 		su += int(check_seq(el))
 	print(su/tries)
 
-	check_comp()
+	test_find_comp()
+	test_find_euler()
 
 
 def check_seq(seq):
@@ -17,21 +19,27 @@ def check_seq(seq):
 		return False
 	return True
 
-def check_comp():
-	G = [[2, 5], [4], [0, 5], [], [1], [0, 2]]
+def test_find_comp():
+	print("\nTask 3: Connected components:\n")
+	G = [[0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 1, 0], [1, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [1, 0, 1, 0, 0, 0]]
 	components = Components()
-	[comp, nr] = components.FindComponents(G)
+	[comp, nr] = components.find_components(G)
 
-	compLists = [[] for x in range(nr)]
+	comp_lists = [[] for x in range(nr)]
 	for v in range(len(G)):
-		compLists[comp[v] - 1].append(v)
+		comp_lists[comp[v] - 1].append(v)
 
-	for count, item in enumerate(compLists):
+	for count, item in enumerate(comp_lists):
 		print(count + 1, item)
-	print("Biggest connected component: " + str(components.MaxComponent))
-	print("has " + str(components.MaxCountComponents) + " vertices")
+	print("Biggest connected component: " + str(components.max_component))
+	print("has " + str(components.max_count) + " vertices")
 
-
+def test_find_euler():
+	print("\nTask 4: Euler cycle:\n")
+	G = [[0, 1, 1, 1, 0, 1], [1, 0, 1, 0, 0, 0], [1, 1, 0, 1, 0, 1], [1, 0, 1, 0, 1, 1], [0, 0, 0, 1, 0, 1], [1, 0, 1, 1, 1, 0]]
+	euler_list = []
+	euler(G, 0, euler_list)
+	print(euler_list)
 
 
 if __name__ == '__main__':

@@ -1,8 +1,8 @@
 class Components():
-    MaxComponent = 1
-    MaxCountComponents = 0
-    CountComponents = 0
-    def FindComponents(self, G):
+    max_component = 1
+    max_count = 0
+    count = 0
+    def find_components(self, G):
         nr = 0
         comp = []
         for v in range(len(G)):
@@ -11,16 +11,16 @@ class Components():
             if comp[v] == -1:
                 nr += 1
                 comp[v] = nr
-                self.OneComponent(nr, v, G, comp)
-                if self.MaxCountComponents < self.CountComponents:
-                    self.MaxCountComponents = self.CountComponents
-                    self.MaxComponent = nr
-                self.CountComponents = 0
+                self.one_component(nr, v, G, comp)
+                if self.max_count < self.count:
+                    self.max_count = self.count
+                    self.max_component = nr
+                self.count = 0
         return [comp, nr]
 
-    def OneComponent(self, nr, v, G, comp):
-        self.CountComponents += 1
-        for u in G[v]:
-            if comp[u] == -1:
+    def one_component(self, nr, v, G, comp):
+        self.count += 1
+        for u in range(len(G[v])):
+            if G[v][u] == 1 and comp[u] == -1:
                 comp[u] = nr
-                self.OneComponent(nr, u, G, comp)
+                self.one_component(nr, u, G, comp)
