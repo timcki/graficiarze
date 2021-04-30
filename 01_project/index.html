@@ -11,60 +11,69 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
-
+    <link rel="stylesheet" href="index.css" type="text/css"/>
   </head>
   <body>
+    <nav>
+      <button onclick="showInput()">Input</button>
+      <button onclick="showRandom()">Random</button>
+    </nav>
 
-<div class="container">
-  <fieldset>
-    <label for="nodes">Choose graph representation: </label>
-    <select name="type" id="type">
-      <option value="adj">Adjacency matrix</option>
-      <option value="list">Adjacency list</option>
-      <option value="inc">Incidence matrix</option>
-    </select>
-    <label for="nodesInput">Number of nodes: </label>
-    <input id="nodesInput" type="number" min=1 value=4>
-    <label for="edgesInput">Number of edges: </label>
-    <input id="edgesInput" type="number" min=0 value=3>
-    <br/><button onclick="gen_graph_input()">Generate input form</button>
-    </fieldset>
-</div>
-
-<div class="container">
-  <div id="inputGraph"></div>
-  <div id="firstOutput"></div>
-  <div id="secoundOutput" class="column"></div>
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="column">
+    <div id="input">
+      <div class="container">
         <fieldset>
-        <label for="nodes">Number of nodes: </label>
-        <input id="nodes" type="number" min=1>
-        <label for="edges">Number of edges: </label>
-        <input id="edges" type="number" min=0>
-        <br/><button onclick="gen_n_l()">Generate G(n,l)</button>
-        </fieldset>
-    </div>
-      <div class="column">
-        <fieldset>
-        <label for="nodes2">Number of nodes: </label>
-        <input id="nodes2" type="number" min=1>
-        <label for="prob">Probability: </label>
-        <input id="prob" type="number" min=0 max=1>
-        <br/><button onclick="gen_n_p()">Generate G(n,p)</button><br/></div>
-        </fieldset>
+          <label for="nodes">Choose graph representation: </label>
+          <select name="type" id="type">
+            <option value="adj">Adjacency matrix</option>
+            <option value="list">Adjacency list</option>
+            <option value="inc">Incidence matrix</option>
+          </select>
+          <label for="nodesInput">Number of nodes: </label>
+          <input id="nodesInput" type="number" min=1 value=4>
+          <label for="edgesInput">Number of edges: </label>
+          <input id="edgesInput" type="number" min=0 value=3>
+          <br/><button onclick="gen_graph_input()">Generate input form</button>
+          </fieldset>
+      </div>
+
+      <div class="container">
+        <div id="inputGraph"></div>
+        <div id="firstOutput"></div>
+        <div id="secoundOutput" class="column"></div>
       </div>
     </div>
 
-</div>
-    <div class="container">
-        <div id="result" class="column"></div>
-        <div id="representations1" class="column"></div>
-        <div id="representations2" class="column"></div>
-    </div>
+    <div id="random">
+      <div class="container">
+        <div class="row">
+          <div class="column">
+              <fieldset>
+              <label for="nodes">Number of nodes: </label>
+              <input id="nodes" type="number" min=1>
+              <label for="edges">Number of edges: </label>
+              <input id="edges" type="number" min=0>
+              <br/><button onclick="gen_n_l()">Generate G(n,l)</button>
+              </fieldset>
+          </div>
+          <div class="column">
+              <fieldset>
+              <label for="nodes2">Number of nodes: </label>
+              <input id="nodes2" type="number" min=1>
+              <label for="prob">Probability: </label>
+              <input id="prob" type="number" min=0 max=1>
+              <br/><button onclick="gen_n_p()">Generate G(n,p)</button><br/></div>
+              </fieldset>
+          </div>
+        </div>
+
+      </div>
+      <div class="container">
+          <div id="result" class="column"></div>
+          <div id="representations1" class="column"></div>
+          <div id="representations2" class="column"></div>
+      </div>
+   </div>
+
     <div class="container">
         <canvas id="canvas" width="1280" height="720"></canvas>
     </div>

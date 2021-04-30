@@ -87,3 +87,10 @@ function print_matrix(a, b, matrix, idOut, type) {
     table += "</tbody></table>"
     result.innerHTML = table;
 }
+
+function showRandom() {
+    var input = document.getElementById("input");
+	var random = document.getElementById("random");
+	input.style.display = 'none';
+	random.style.display = 'block';
+}

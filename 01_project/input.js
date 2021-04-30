@@ -304,3 +304,9 @@ function gen_graph_input(){
     }
 }
 
+function showInput() {
+    var input = document.getElementById("input");
+	var random = document.getElementById("random");
+	random.style.display = 'none';
+	input.style.display = 'block';
+}
