@@ -60,7 +60,7 @@ function draw_edges(points, context) {
 
 function draw_text(x, y, text, context) {
   y += 8; 
-  console.log(text, text.length)
+  //console.log(text, text.length)
   if (text.length == 1) x -= 5;
   else x-= 10;
 
