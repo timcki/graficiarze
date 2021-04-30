@@ -93,4 +93,12 @@ function showRandom() {
 	var random = document.getElementById("random");
 	input.style.display = 'none';
 	random.style.display = 'block';
+
+    document.getElementById("inputGraph").innerHTML = "";
+    document.getElementById("firstOutput").innerHTML = "";
+    document.getElementById("secoundOutput").innerHTML = "";
+
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
 }

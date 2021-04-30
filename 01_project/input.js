@@ -309,4 +309,12 @@ function showInput() {
 	var random = document.getElementById("random");
 	random.style.display = 'none';
 	input.style.display = 'block';
+
+    document.getElementById("result").innerHTML = "";
+    document.getElementById("representations1").innerHTML = "";
+    document.getElementById("representations2").innerHTML = "";
+
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    context.clearRect(0, 0, canvas.width, canvas.height);
 }
