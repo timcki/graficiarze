@@ -1,6 +1,6 @@
 function draw_graph() {
     // Set the content of the table to blank
-    document.getElementById("result").innerHTML = "";
+    //document.getElementById("result").innerHTML = "";
     //document.getElementById(
     // Generate the coordinates of the circles
 

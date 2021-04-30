@@ -64,7 +64,7 @@ function create_adj_graph(){
     document.getElementById("edgesInput").value = l;
     let list = adj_matrix_to_adj_list(adj);
     
-    let out = '<h2>Adjency list <h2> <ol start=0>';
+    let out = '<h2>Adjacency list <h2> <ol start=0>';
     for(let i = 0; i < list.length; i++){
         let str = list[i].toString(); 
         out +=  '<li>' + str + '</li>';
@@ -75,6 +75,29 @@ function create_adj_graph(){
      
     let inc = adj_matrix_to_inc_matrix(adj);
     print_matrix(n, l, transpose(inc), 'secoundOutput');
+
+    window.graph = new Graph(n, adj, null, null);
+    draw_graph();
+}
+
+function draw_list_and_inc(adj, n) {
+    let l = 0;
+    for(let i = 0; i < n; i++)
+        for(let j = i; j < n; j++)
+            l += Number(adj[i][j]);
+    let list = adj_matrix_to_adj_list(adj);
+    
+    let out = '<h2>Adjacency list <h2> <ol start=0>';
+    for(let i = 0; i < list.length; i++){
+        let str = list[i].toString(); 
+        out +=  '<li>' + str + '</li>';
+    }
+    out += '</ol>';
+    out += 'Incidence Matrix';
+    document.getElementById('representations1').innerHTML = out;
+     
+    let inc = adj_matrix_to_inc_matrix(adj);
+    print_matrix(n, l, transpose(inc), 'representations2');
 
     window.graph = new Graph(n, adj, null, null);
     draw_graph();
@@ -106,7 +129,7 @@ function create_inc_graph(){
 
     let list = inc_matrix_to_adj_list(inc);
     
-    let out = '<h2>Adjust list <h2> <ol start=0>';
+    let out = '<h2>Adjacency list <h2> <ol start=0>';
     for(let i = 0; i < list.length; i++){
         let str = list[i].toString(); 
         out +=  '<li>' + str + '</li>';
@@ -117,6 +140,24 @@ function create_inc_graph(){
      
     let adj = inc_matrix_to_adj_matrix(inc);
     print_matrix(n, n, adj, 'secoundOutput');
+    window.graph = new Graph(n, null, inc, null);
+    draw_graph();
+}
+
+function draw_list_and_adj(inc, n){
+    let list = inc_matrix_to_adj_list(inc);
+    
+    let out = '<h2>Adjacency list <h2> <ol start=0>';
+    for(let i = 0; i < list.length; i++){
+        let str = list[i].toString(); 
+        out +=  '<li>' + str + '</li>';
+    }
+    out += '</ol>';
+    out += '<h2>Adjacency Matrix</h2>';
+    document.getElementById('representations1').innerHTML = out;
+     
+    let adj = inc_matrix_to_adj_matrix(inc);
+    print_matrix(n, n, adj, 'representations2');
     window.graph = new Graph(n, null, inc, null);
     draw_graph();
 }

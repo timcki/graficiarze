@@ -28,12 +28,12 @@ function gen_n_l() {
         matrix[j][x] = 1; matrix[j][y] = 1;
     }
 
-    print_matrix(n, l, transpose(matrix), "result");
-
+    print_matrix(n, l, transpose(matrix), "result", "Incidence Matrix");
+    draw_list_and_adj(matrix, n);
     
     // matrix = transpose(matrix);
 
-    window.graph = new Graph(n, null, matrix, null)
+    //window.graph = new Graph(n, null, matrix, null)
 
 }
 
@@ -53,19 +53,22 @@ function gen_n_p() {
         for (j = i+1; j < n; j++)
             matrix[i][j] = matrix[j][i] = +(Math.random() <= p);
 
-
-    print_matrix(n, n, matrix, "result");
-    window.graph = new Graph(n, matrix, null, null);
-    console.log(window.graph.test());
-    window.graph.get_pairs();
+    print_matrix(n, n, matrix, "result", "Adjacency Matrix");
+    draw_list_and_inc(matrix, n);
+    
+    //window.graph = new Graph(n, matrix, null, null);
+    //console.log(window.graph.test());
+    //window.graph.get_pairs();
 }
 
 
-function print_matrix(a, b, matrix, idOut) {
+function print_matrix(a, b, matrix, idOut, type) {
     const result = document.getElementById(idOut)
     let table = "";
     if(idOut == "result")
-        table += "<button onclick=draw_graph()>Draw graph</button>";
+        table += "<h2>" + type + "</h2>";
+    //if(idOut == "result")
+    //    table += "<button onclick=draw_graph()>Draw graph</button>";
     table += "<table><tbody>";
     table += "<thead>";
     table += "<th></th>";
