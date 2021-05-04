@@ -1,4 +1,7 @@
 import random
+import networkx as nx
+import numpy as np
+import matplotlib.pyplot as plt
 from components import Components 
 from euler import euler
 
@@ -21,7 +24,13 @@ def check_seq(seq):
 
 def test_find_comp():
 	print("\nTask 3: Connected components:\n")
-	G = [[0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 1, 0], [1, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0], [1, 0, 1, 0, 0, 0]]
+	G = [[0, 0, 1, 0, 0, 1], 
+		 [0, 0, 0, 0, 1, 0], 
+		 [1, 0, 0, 0, 0, 1], 
+		 [0, 0, 0, 0, 0, 0], 
+		 [0, 1, 0, 0, 0, 0], 
+		 [1, 0, 1, 0, 0, 0]]
+
 	components = Components()
 	[comp, nr] = components.find_components(G)
 
@@ -36,10 +45,23 @@ def test_find_comp():
 
 def test_find_euler():
 	print("\nTask 4: Euler cycle:\n")
-	G = [[0, 1, 1, 1, 0, 1], [1, 0, 1, 0, 0, 0], [1, 1, 0, 1, 0, 1], [1, 0, 1, 0, 1, 1], [0, 0, 0, 1, 0, 1], [1, 0, 1, 1, 1, 0]]
+	G = [[0, 1, 1, 1, 0, 1], 
+		 [1, 0, 1, 0, 0, 0], 
+		 [1, 1, 0, 1, 0, 1], 
+		 [1, 0, 1, 0, 1, 1], 
+		 [0, 0, 0, 1, 0, 1], 
+		 [1, 0, 1, 1, 1, 0]]
+
+	matrix = np.array(G)
+	graph = nx.from_numpy_matrix(matrix)
+
 	euler_list = []
 	euler(G, 0, euler_list)
 	print(euler_list)
+	
+	plt.subplot(111)
+	nx.draw(graph, with_labels=True, font_weight='bold')
+	plt.show()
 
 
 if __name__ == '__main__':
