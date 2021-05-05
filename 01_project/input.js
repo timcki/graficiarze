@@ -318,3 +318,19 @@ function showInput() {
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
 }
+
+function refresh_input_type(){
+    element = document.getElementById('edgesInput');
+    console.log(element.style.backgroundColor)
+    console.log(document.getElementById('type').value)
+    selected = document.getElementById('type').value
+    if (selected == 'adj' || selected == 'list'){
+        element.disabled = true;
+        element.style.backgroundColor = 'grey'
+    }
+    else{
+        element.disabled = false;
+        element.style.backgroundColor = ''
+    }
+
+    }

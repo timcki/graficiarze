@@ -23,7 +23,7 @@
       <div class="container">
         <fieldset>
           <label for="nodes">Choose graph representation: </label>
-          <select name="type" id="type">
+          <select name="type" id="type" onchange="refresh_input_type()">
             <option value="adj">Adjacency matrix</option>
             <option value="list">Adjacency list</option>
             <option value="inc">Incidence matrix</option>
@@ -31,7 +31,7 @@
           <label for="nodesInput">Number of nodes: </label>
           <input id="nodesInput" type="number" min=1 value=4>
           <label for="edgesInput">Number of edges: </label>
-          <input id="edgesInput" type="number" min=0 value=3>
+          <input id="edgesInput" type="number" min=0 value=0 style="background-color: grey;"  disabled>
           <br/><button onclick="gen_graph_input()">Generate input form</button>
         </fieldset>
       </div>
