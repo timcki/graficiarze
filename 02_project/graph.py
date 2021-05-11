@@ -65,8 +65,9 @@ class Graph:
                 break
         while True:
             p2 = (random.randint(1, self.size-1), random.randint(1, self.size-1))
-            if self.adjacency[p2[0]][p2[1]] == 1:
-                break
+            if p2[0] not in p1 and p2[1] not in p1:
+                if self.adjacency[p2[0]][p2[1]] == 1:
+                    break
         self.adjacency[p1[0]][p2[1]] = 1
         self.adjacency[p2[0]][p1[1]] = 1
         self.adjacency[p1[0]][p1[1]] = 0
