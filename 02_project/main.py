@@ -7,7 +7,7 @@ import numpy as np
 import random
 import matplotlib.pyplot as plt
 from components import Components
-from euler import euler
+from euler import euler, choose_biggest_comp, print_m
 from hamilton import *
 
 import argparse
@@ -109,8 +109,11 @@ def main():
         return
 
     if arg[0].euler:
-        # TO DO:: Implement this
-        test_find_euler_random()
+        parser2 = argparse.ArgumentParser()
+        parser2.add_argument('n', type=int, nargs='?', default=0)
+
+        args = parser2.parse_args(arg[1])
+        test_find_euler_random(args.n)
         return
 
     if arg[0].regular:
@@ -184,30 +187,18 @@ def test_find_euler():
     plt.show()
 
 
-def test_find_euler_random():
-    print("\nTask 4: Euler cycle random:\n")
-    #
-    adjacency = np.array([[0, 1, 1, 1, 0, 1], 
-         [1, 0, 1, 0, 0, 0], 
-         [1, 1, 0, 1, 0, 1], 
-         [1, 0, 1, 0, 1, 1], 
-         [0, 0, 0, 1, 0, 1], 
-         [1, 0, 1, 1, 1, 0]])
-    g = Graph(adjacency)
+def test_find_euler_random(n):
     while True:
-        n = random.randint(4, 10)
+        if n == 0:
+            n = random.randint(4, 12)
         el = np.array([random.randint(0, 4)*2 for x in range(n)])
         try:
-            print(-np.sort(-el))
             g = Graph.from_sequence(el)
-            #g = Graph.from_sequence(np.array([6, 6, 4, 2, 2, 2, 2, 2, 0]))
             choose_biggest_comp(g)
             print(g.adjacency)
             g.randomize_edges()
-            for l in g.adjacency:
-                for el in l:
-                    print(el, end=',')
-                print()
+            print(g.adjacency)
+
             graph = nx.from_numpy_matrix(g.adjacency)
             euler_list = []
             euler(g.adjacency.tolist(), 0, euler_list)
@@ -218,18 +209,15 @@ def test_find_euler_random():
             plt.show()
             break
         except NotGraphicSequenceException:
-            print("Not a graphic sequence")
-
-
-if __name__ == '__main__':
-    main()
-
+            continue
 
 def gen_k_regular(n, k):
     el = np.full(shape=n, fill_value=k, dtype=int)
     print(el)
     try:
         g = Graph.from_sequence(el)
+        for i in range(20):
+            g.randomize_edges()
     except NotGraphicSequenceException:
         print('It is impossible to create k-regular graph with given parameters!')
         return
@@ -276,3 +264,8 @@ def convert_matrix_to_adj_list(adj):
 
 if __name__ == '__main__':
     main()
+
+if __name__ == '__main__':
+    main()
+
+
