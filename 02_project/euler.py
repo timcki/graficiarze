@@ -29,3 +29,21 @@ def print_m(G):
         for u in range(len(G[v])):
             print(G[v][u], end='')
         print()
+
+def choose_biggest_comp(G):
+    biggest_comp = []
+    components = Components()
+    [comp, nr] = components.find_components(G.adjacency)
+
+    for v in range(G.size):
+        if comp[v] == components.max_component:
+            biggest_comp.append(v)
+    for i in reversed(range(G.size)):
+        if i not in biggest_comp:
+            G.adjacency.pop(i)
+        else:
+            for j in reversed(range(G.size)):
+                if j not in biggest_comp:
+                    G.adjacency[i].pop(j)
+        
+    G.size -= (G.size - len(biggest_comp))

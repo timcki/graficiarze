@@ -1,20 +1,31 @@
+#! /usr/bin/python3
+
+from graph import Graph, NotGraphicSequenceException
 import random
 import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 from components import Components 
-from euler import euler
+from euler import euler, choose_biggest_comp
 
 def main():
-	tries = 200
-	su = 0
+	tries = 1
 	for i in range(tries):
-		el = [random.randint(0, 6) for x in range(10)]
-		su += int(check_seq(el))
-	print(su/tries)
+		el = np.array([random.randint(0, 9) for x in range(25)])
+		try:
+			print(-np.sort(-el))
+			g = Graph.from_sequence(el)
+			g.randomize_edges()
+			for l in g.adjacency:
+				for el in l:
+					print(el, end=',')
+				print()
+		except NotGraphicSequenceException:
+			print("Not a graphic sequence")
 
 	test_find_comp()
 	test_find_euler()
+	test_find_euler_random()
 
 
 def check_seq(seq):
@@ -63,6 +74,42 @@ def test_find_euler():
 	nx.draw(graph, with_labels=True, font_weight='bold')
 	plt.show()
 
+def test_find_euler_random():
+	print("\nTask 4: Euler cycle random:\n")
+	#
+	adjacency = np.array([[0, 1, 1, 1, 0, 1], 
+		 [1, 0, 1, 0, 0, 0], 
+		 [1, 1, 0, 1, 0, 1], 
+		 [1, 0, 1, 0, 1, 1], 
+		 [0, 0, 0, 1, 0, 1], 
+		 [1, 0, 1, 1, 1, 0]])
+	g = Graph(adjacency)
+	while True:
+		n = random.randint(4, 10)
+		el = np.array([random.randint(0, 4)*2 for x in range(n)])
+		try:
+			#print(-np.sort(-el))
+			#g = Graph.from_sequence(el)
+			#g = Graph.from_sequence(np.array([6, 6, 4, 2, 2, 2, 2, 2, 0]))
+			choose_biggest_comp(g)
+			print(g.adjacency)
+			g.randomize_edges()
+			for l in g.adjacency:
+				for el in l:
+					print(el, end=',')
+				print()
+			graph = nx.from_numpy_matrix(g.adjacency)
+			euler_list = []
+			euler(g.adjacency, 0, euler_list)
+			print(euler_list)
+				
+			plt.subplot(111)
+			nx.draw(graph, with_labels=True, font_weight='bold')
+			plt.show()
+			break
+		except NotGraphicSequenceException:
+			print("Not a graphic sequence")
+
 
 if __name__ == '__main__':
-	main()
+    main()
