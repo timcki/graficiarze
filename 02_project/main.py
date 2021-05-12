@@ -15,7 +15,8 @@ def main():
 		try:
 			print(-np.sort(-el))
 			g = Graph.from_sequence(el)
-			g.randomize_edges()
+			for i in range(20):
+				g.randomize_edges()
 			for l in g.adjacency:
 				for el in l:
 					print(el, end=',')
@@ -88,8 +89,8 @@ def test_find_euler_random():
 		n = random.randint(4, 10)
 		el = np.array([random.randint(0, 4)*2 for x in range(n)])
 		try:
-			#print(-np.sort(-el))
-			#g = Graph.from_sequence(el)
+			print(-np.sort(-el))
+			g = Graph.from_sequence(el)
 			#g = Graph.from_sequence(np.array([6, 6, 4, 2, 2, 2, 2, 2, 0]))
 			choose_biggest_comp(g)
 			print(g.adjacency)
@@ -100,7 +101,7 @@ def test_find_euler_random():
 				print()
 			graph = nx.from_numpy_matrix(g.adjacency)
 			euler_list = []
-			euler(g.adjacency, 0, euler_list)
+			euler(g.adjacency.tolist(), 0, euler_list)
 			print(euler_list)
 				
 			plt.subplot(111)

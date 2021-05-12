@@ -1,4 +1,5 @@
 from components import Components 
+import numpy as np
 
 #TO DO: losowanie grafu eulerowskiego z zad 2 o parzystych stopniach wierzcholkow i jednej spojnej skladowej
 def euler(G, v, euler_list):
@@ -35,15 +36,17 @@ def choose_biggest_comp(G):
     components = Components()
     [comp, nr] = components.find_components(G.adjacency)
 
+    adj = G.adjacency.tolist()
     for v in range(G.size):
         if comp[v] == components.max_component:
             biggest_comp.append(v)
     for i in reversed(range(G.size)):
         if i not in biggest_comp:
-            G.adjacency.pop(i)
+            adj.pop(i)
         else:
             for j in reversed(range(G.size)):
                 if j not in biggest_comp:
-                    G.adjacency[i].pop(j)
+                    adj[i].pop(j)
         
     G.size -= (G.size - len(biggest_comp))
+    G.adjacency = np.array(adj)

@@ -42,22 +42,18 @@ class Graph:
     def adjacency_from_sequence(cls, seq: List[int]) -> Any:
 
         a_matrix = np.zeros(shape=(len(seq), len(seq)), dtype=np.int8)
+        seq = list(enumerate(-np.sort(-seq)))
         pos = 0
 
-        seq = -np.sort(-seq)
         while len(seq) > 0:
-
-            k = seq[0]
-            print(k)
+            edge, number = seq[0]
             seq = seq[1:]
-            if k < 1:
-                continue
 
-            for i in range(1, k+1):
-                seq[i-1] -= 1
-                a_matrix[pos][i+pos] = a_matrix[i+pos][pos] = 1
+            for i in range(0, number):
+                seq[i] = (seq[i][0], seq[i][1]-1)
+                a_matrix[edge, seq[i][0]] = a_matrix[seq[i][0], edge] = 1
 
-            pos += 1
+            seq.sort(key=lambda x: -x[1])
 
         return cls(a_matrix)
 
@@ -71,11 +67,14 @@ class Graph:
             if p2[0] not in p1 and p2[1] not in p1:
                 if self.adjacency[p2[0]][p2[1]] == 1:
                     break
-        self.adjacency[p1[0]][p2[1]] = 1
-        self.adjacency[p2[0]][p1[1]] = 1
-        self.adjacency[p1[0]][p1[1]] = 0
-        self.adjacency[p2[0]][p2[1]] = 0
-        print(p1, p2)
+        # Set new edge pair
+        # (8, 3); (1, 13)
+        # (8, 13); (1, 3)
+        self.adjacency[p1[0], p2[1]] = self.adjacency[p2[1], p1[0]] = 1
+        self.adjacency[p2[0], p1[1]] = self.adjacency[p1[1], p2[0]] = 1
+        # And delete previous one
+        self.adjacency[p1[0], p1[1]] = self.adjacency[p1[1], p1[0]] = 0
+        self.adjacency[p2[0], p2[1]] = self.adjacency[p2[1], p2[0]] = 0
 
 
 
