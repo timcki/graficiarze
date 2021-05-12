@@ -110,7 +110,7 @@ def main():
 
     if arg[0].euler:
         # TO DO:: Implement this
-        test_find_euler()
+        test_find_euler_random()
         return
 
     if arg[0].regular:
@@ -182,6 +182,47 @@ def test_find_euler():
     plt.subplot(111)
     nx.draw(graph, with_labels=True, font_weight='bold')
     plt.show()
+
+
+def test_find_euler_random():
+    print("\nTask 4: Euler cycle random:\n")
+    #
+    adjacency = np.array([[0, 1, 1, 1, 0, 1], 
+         [1, 0, 1, 0, 0, 0], 
+         [1, 1, 0, 1, 0, 1], 
+         [1, 0, 1, 0, 1, 1], 
+         [0, 0, 0, 1, 0, 1], 
+         [1, 0, 1, 1, 1, 0]])
+    g = Graph(adjacency)
+    while True:
+        n = random.randint(4, 10)
+        el = np.array([random.randint(0, 4)*2 for x in range(n)])
+        try:
+            print(-np.sort(-el))
+            g = Graph.from_sequence(el)
+            #g = Graph.from_sequence(np.array([6, 6, 4, 2, 2, 2, 2, 2, 0]))
+            choose_biggest_comp(g)
+            print(g.adjacency)
+            g.randomize_edges()
+            for l in g.adjacency:
+                for el in l:
+                    print(el, end=',')
+                print()
+            graph = nx.from_numpy_matrix(g.adjacency)
+            euler_list = []
+            euler(g.adjacency.tolist(), 0, euler_list)
+            print(euler_list)
+                
+            plt.subplot(111)
+            nx.draw(graph, with_labels=True, font_weight='bold')
+            plt.show()
+            break
+        except NotGraphicSequenceException:
+            print("Not a graphic sequence")
+
+
+if __name__ == '__main__':
+    main()
 
 
 def gen_k_regular(n, k):
