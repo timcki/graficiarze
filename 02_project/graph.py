@@ -39,20 +39,26 @@ class Graph:
     def adjacency_from_sequence(cls, seq: List[int]) -> Any:
 
         a_matrix = np.zeros(shape=(len(seq), len(seq)), dtype=np.int8)
+        seq = -np.sort(-seq)
         pos = 0
 
-        seq = -np.sort(-seq)
         while len(seq) > 0:
 
             k = seq[0]
-            print(k)
+            print(k, end=": ")
             seq = seq[1:]
-            if k < 1:
-                continue
+            print(seq)
 
             for i in range(1, k+1):
-                seq[i-1] -= 1
-                a_matrix[pos][i+pos] = a_matrix[i+pos][pos] = 1
+                inc = i
+                while inc < len(seq):
+                    if seq[inc-1] > 0:
+                        seq[inc-1] -= 1
+                        break
+                    else:
+                        inc += 1
+                print(pos, inc+pos)
+                a_matrix[pos][inc+pos] = a_matrix[inc+pos][pos] = 1
 
             pos += 1
 
