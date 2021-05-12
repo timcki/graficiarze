@@ -140,11 +140,6 @@ def main():
         return
 
 
-def check_seq(seq):
-    if sum(seq) % 2:
-        return False
-    return True
-
 
 def test_find_comp():
     print("\nTask 3: Connected components:\n")
@@ -202,24 +197,17 @@ def gen_k_regular(n, k):
 
 
 def test_all():
-    tries = 1
+    tries = 3
     for i in range(tries):
         el = np.array([random.randint(0, 9) for x in range(25)])
-        print(el)
+        print(-np.sort(-el))
         try:
             g = Graph.from_sequence(el)
             for i in range(20):
                 g.randomize_edges()
-            print(g.adjacency)
+            g.show()
         except NotGraphicSequenceException:
             print("Not a graphic sequence")
-
-    tries = 200
-    su = 0
-    for i in range(tries):
-        el = [random.randint(0, 6) for x in range(10)]
-        su += int(check_seq(el))
-    print(su / tries)
 
     test_find_comp()
     test_find_euler()
