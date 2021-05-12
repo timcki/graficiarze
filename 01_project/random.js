@@ -15,7 +15,7 @@ function gen_n_l() {
         return
     }
 
-    var matrix = get_matrix(n, l) // Macierz incydencji
+    var matrix = get_matrix(l, n) // Macierz incydencji
     var nodes = get_matrix(n, n) // Macierz, w ktorej 1 oznacza, ze pomiedzy dwoma wierzcholkami jest juz krawedz
 
     for (j = 0; j < l; j++) {
@@ -25,10 +25,13 @@ function gen_n_l() {
         } while (nodes[x][y] === 1)
 
         nodes[x][y] = 1; nodes[y][x] = 1;
-        matrix[x][j] = 1; matrix[y][j] = 1;
+        matrix[j][x] = 1; matrix[j][y] = 1;
     }
 
-    print_matrix(n, l, matrix);
+    print_matrix(n, l, transpose(matrix), "result");
+
+    
+    // matrix = transpose(matrix);
 
     window.graph = new Graph(n, null, matrix, null)
 
@@ -51,17 +54,19 @@ function gen_n_p() {
             matrix[i][j] = matrix[j][i] = +(Math.random() <= p);
 
 
-    print_matrix(n, n, matrix);
+    print_matrix(n, n, matrix, "result");
     window.graph = new Graph(n, matrix, null, null);
     console.log(window.graph.test());
     window.graph.get_pairs();
 }
 
 
-function print_matrix(a, b, matrix) {
-    const result = document.getElementById("result")
+function print_matrix(a, b, matrix, idOut) {
+    const result = document.getElementById(idOut)
     let table = "";
-    table += "<button onclick=draw_graph()>Draw graph</button><table><tbody>";
+    if(idOut == "result")
+        table += "<button onclick=draw_graph()>Draw graph</button>";
+    table += "<table><tbody>";
     table += "<thead>";
     table += "<th></th>";
 

@@ -3,6 +3,9 @@ from typing import List, Any
 import random
 import numpy as np
 
+import networkx as nx
+import matplotlib.pyplot as plt
+
 class Graph:
     def __init__(self, adj: Any):
         self.adjacency = adj
@@ -59,23 +62,38 @@ class Graph:
 
     def randomize_edges(self):
         while True:
-            p1 = (random.randint(1, self.size-1), random.randint(1, self.size-1))
-            if self.adjacency[p1[0]][p1[1]] == 1:
-                break
-        while True:
-            p2 = (random.randint(1, self.size-1), random.randint(1, self.size-1))
-            if p2[0] not in p1 and p2[1] not in p1:
-                if self.adjacency[p2[0]][p2[1]] == 1:
+            while True:
+                p1 = (random.randint(0, self.size-1), random.randint(0, self.size-1))
+                if self.adjacency[p1[0], p1[1]] == 1 and p1[0] != p1[1]:
                     break
+            while True:
+                p2 = (random.randint(0, self.size-1), random.randint(0, self.size-1))
+                if p2[0] not in p1 and p2[1] not in p1:
+                    if self.adjacency[p2[0], p2[1]] == 1 and p2[0] != p2[1]:
+                        break
+
+            if self.adjacency[p1[0], p2[1]] == 1 or self.adjacency[p1[1], p2[0]] == 1: continue
+            else: break
+
+
         # Set new edge pair
-        # (8, 3); (1, 13)
-        # (8, 13); (1, 3)
+        # (a, b); (c, d) => (a, d); (b, c)
         self.adjacency[p1[0], p2[1]] = self.adjacency[p2[1], p1[0]] = 1
-        self.adjacency[p2[0], p1[1]] = self.adjacency[p1[1], p2[0]] = 1
+        self.adjacency[p1[1], p2[0]] = self.adjacency[p2[0], p1[1]] = 1
         # And delete previous one
         self.adjacency[p1[0], p1[1]] = self.adjacency[p1[1], p1[0]] = 0
         self.adjacency[p2[0], p2[1]] = self.adjacency[p2[1], p2[0]] = 0
+        #print(p1, p2)
+        return (p1, p2)
 
+    def show(self):
+        adj = self.adjacency
+        print(adj)
+
+        graph = nx.from_numpy_matrix(adj)
+        plt.subplot(111)
+        nx.draw(graph, with_labels=True, font_weight='bold')
+        plt.show()
 
 
 
