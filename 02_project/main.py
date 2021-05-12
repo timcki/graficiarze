@@ -14,7 +14,7 @@ import argparse
 
 
 def main():
-    test_all()
+    #test_all()
 
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
@@ -72,9 +72,11 @@ def main():
             print(f"Sequence:\n{args.seq}\nis not a graphic sequence")
             return
 
+        print("Randomized edges:")
         for i in range(0, args.n):
-            print(i)
-            g.randomize_edges()
+            p1, p2 = g.randomize_edges()
+            print(f"{p1}, {p2} => ({p1[0]}, {p2[1]}), ({p1[1]}, {p2[0]})")
+        print()
         g.show()
         return
 
