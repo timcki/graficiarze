@@ -9,6 +9,7 @@ def main():
     tries = 1
     for i in range(tries):
         el = np.array([random.randint(0, 9) for x in range(25)])
+        #el = np.array([2, 2, 2, 2, 2, 2, 2])
         try:
             print(-np.sort(-el))
             g = Graph.from_sequence(el)
