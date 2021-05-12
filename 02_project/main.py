@@ -14,7 +14,7 @@ import argparse
 
 
 def main():
-    test_all()
+    # test_all()
 
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
@@ -73,7 +73,6 @@ def main():
             return
 
         for i in range(0, args.n):
-            print(i)
             g.randomize_edges()
         g.show()
         return
@@ -107,8 +106,15 @@ def main():
         return
 
     if arg[0].euler:
-        # TO DO:: Implement this
-        test_find_euler()
+        parser2 = argparse.ArgumentParser()
+        parser2.add_argument('n', type=int, default=None)
+
+        args = parser2.parse_args(arg[1])
+
+        if args.n is None:
+            args.n = random.randint(0, 9)
+
+        #TO DO draw until u get euler's graph
         return
 
     if arg[0].regular:
