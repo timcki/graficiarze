@@ -1,4 +1,4 @@
-from typing import List, Any
+from typing import List, Any, Tuple
 
 import random
 import numpy as np
@@ -15,6 +15,7 @@ class Graph:
     # https://math.stackexchange.com/questions/1074651/check-if-sequence-is-graphic-8-8-7-7-6-6-4-3-2-1-1-1
     # https://mathworld.wolfram.com/GraphicSequence.html
     @classmethod
+    # Checks if graph can be created from given sequence
     def from_sequence(cls, seq: List[int]) -> Any:
 
         if sum(seq) % 2:
@@ -39,6 +40,7 @@ class Graph:
 
 
     @classmethod
+    # Generate adjacency matrix from graphic sequence
     def adjacency_from_sequence(cls, seq: List[int]) -> Any:
 
         a_matrix = np.zeros(shape=(len(seq), len(seq)), dtype=np.int8)
@@ -57,8 +59,11 @@ class Graph:
 
         return cls(a_matrix)
 
-    def randomize_edges(self):
+    # Randomize edges following the given rule: 
+    # (a, b); (c, d) => (a, d); (b, c)
+    def randomize_edges(self) -> Tuple[int, int]:
         num_it = 0
+        p1, p2 = (0, 0), (0, 0)
         while num_it < 20000:
             num_it += 1
             while num_it < 20000:
@@ -77,7 +82,7 @@ class Graph:
             else: break
 
         if num_it >= 20000:
-            return ((0, 0), (0, 0))
+            return p1, p2
 
 
         # Set new edge pair
@@ -87,9 +92,9 @@ class Graph:
         # And delete previous one
         self.adjacency[p1[0], p1[1]] = self.adjacency[p1[1], p1[0]] = 0
         self.adjacency[p2[0], p2[1]] = self.adjacency[p2[1], p2[0]] = 0
-        #print(p1, p2)
         return (p1, p2)
 
+    # Print adjacency matrix to terminal and draw graph with networkx
     def show(self):
         adj = self.adjacency
         print(adj)

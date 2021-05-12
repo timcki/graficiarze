@@ -14,8 +14,6 @@ import argparse
 
 
 def main():
-    # test_all()
-
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-s', '--sequence', action='store_true',
@@ -264,8 +262,3 @@ def convert_matrix_to_adj_list(adj):
 
 if __name__ == '__main__':
     main()
-
-if __name__ == '__main__':
-    main()
-
-
