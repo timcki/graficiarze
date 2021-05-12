@@ -67,17 +67,9 @@ def test_find_euler():
 
 def test_find_euler_random():
 	print("\nTask 4: Euler cycle random:\n")
-	#
-	adjacency = np.array([[0, 1, 1, 1, 0, 1], 
-		 [1, 0, 1, 0, 0, 0], 
-		 [1, 1, 0, 1, 0, 1], 
-		 [1, 0, 1, 0, 1, 1], 
-		 [0, 0, 0, 1, 0, 1], 
-		 [1, 0, 1, 1, 1, 0]])
-	g = Graph(adjacency)
 	while True:
-		n = random.randint(4, 10)
-		el = np.array([random.randint(0, 4)*2 for x in range(n)])
+		n = random.randint(4, 8)
+		el = np.array([random.randint(0, 3)*2 for x in range(n)])
 		try:
 			print(-np.sort(-el))
 			g = Graph.from_sequence(el)

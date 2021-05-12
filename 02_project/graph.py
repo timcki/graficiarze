@@ -61,12 +61,16 @@ class Graph:
         return cls(a_matrix)
 
     def randomize_edges(self):
-        while True:
-            while True:
+        num_it = 0
+        while num_it < 20000:
+            num_it += 1
+            while num_it < 20000:
+                num_it += 1
                 p1 = (random.randint(0, self.size-1), random.randint(0, self.size-1))
                 if self.adjacency[p1[0], p1[1]] == 1 and p1[0] != p1[1]:
                     break
-            while True:
+            while num_it < 20000:
+                num_it += 1
                 p2 = (random.randint(0, self.size-1), random.randint(0, self.size-1))
                 if p2[0] not in p1 and p2[1] not in p1:
                     if self.adjacency[p2[0], p2[1]] == 1 and p2[0] != p2[1]:
@@ -74,6 +78,9 @@ class Graph:
 
             if self.adjacency[p1[0], p2[1]] == 1 or self.adjacency[p1[1], p2[0]] == 1: continue
             else: break
+
+        if num_it >= 20000:
+            return ((0, 0), (0, 0))
 
 
         # Set new edge pair
