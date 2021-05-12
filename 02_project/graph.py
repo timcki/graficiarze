@@ -45,20 +45,17 @@ class Graph:
         while len(seq) > 0:
 
             k = seq[0]
-            print(k, end=": ")
             seq = seq[1:]
-            print(seq)
 
-            for i in range(1, k+1):
+            for i in range(0, k):
                 inc = i
                 while inc < len(seq):
-                    if seq[inc-1] > 0:
-                        seq[inc-1] -= 1
+                    if seq[inc] > 0:
+                        seq[inc] -= 1
                         break
                     else:
                         inc += 1
-                print(pos, inc+pos)
-                a_matrix[pos][inc+pos] = a_matrix[inc+pos][pos] = 1
+                a_matrix[pos][inc+1+pos] = a_matrix[inc+1+pos][pos] = 1
 
             pos += 1
 
@@ -74,10 +71,14 @@ class Graph:
             if p2[0] not in p1 and p2[1] not in p1:
                 if self.adjacency[p2[0]][p2[1]] == 1:
                     break
-        self.adjacency[p1[0]][p2[1]] = 1
-        self.adjacency[p2[0]][p1[1]] = 1
-        self.adjacency[p1[0]][p1[1]] = 0
-        self.adjacency[p2[0]][p2[1]] = 0
+        # Set new edge pair
+        # (8, 3); (1, 13)
+        # (8, 13); (1, 3)
+        self.adjacency[p1[0], p2[1]] = self.adjacency[p2[1], p1[0]] = 1
+        self.adjacency[p2[0], p1[1]] = self.adjacency[p1[1], p2[0]] = 1
+        # And delete previous one
+        self.adjacency[p1[0], p1[1]] = self.adjacency[p1[1], p1[0]] = 0
+        self.adjacency[p2[0], p2[1]] = self.adjacency[p2[1], p2[0]] = 0
         print(p1, p2)
 
 

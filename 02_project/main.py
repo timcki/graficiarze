@@ -12,7 +12,8 @@ def main():
         try:
             print(-np.sort(-el))
             g = Graph.from_sequence(el)
-            g.randomize_edges()
+            for i in range(20):
+                g.randomize_edges()
             for l in g.adjacency:
                 for el in l:
                     print(el, end=',')
