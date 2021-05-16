@@ -26,16 +26,16 @@ def main():
                         after -r/--randomize flag
                         in graph given by the graphical sequence(ints separated by
                         spaces)''')
-    group.add_argument('-c', '--composes', action='store_true',
-                       help='''Find all connected  composes
+    group.add_argument('-c', '--components', action='store_true',
+                       help='''Find all connected  components
                         in graph given by the graphical sequence(ints separated by
                         spaces) and mark the greatest''')
     group.add_argument('-e', '--euler', action='store_true',
                        help='''Make random Euler's graph with given n(int) nodes or
                         with random number of them if not specified''')
     group.add_argument('-kr', '--regular', action='store_true',
-                       help='''Make k-regular graph with n nodes where k(int)is first
-                        parameter and n(int) the second one''')
+                       help='''Make k-regular graph with n nodes where n(int) is first
+                        parameter and k(int) the second one''')
     group.add_argument('-H', '--hamilton', action='store_true',
                        help='''Check Hamilton's cycle exists in graph given by the
                         graphical sequence(ints separated by spaces) and prints it''')
@@ -80,7 +80,7 @@ def main():
         g.show()
         return
 
-    if arg[0].composes:
+    if arg[0].components:
 
         parser2 = argparse.ArgumentParser()
         parser2.add_argument('seq', type=int, nargs='+')
@@ -264,8 +264,3 @@ def convert_matrix_to_adj_list(adj):
 
 if __name__ == '__main__':
     main()
-
-if __name__ == '__main__':
-    main()
-
-

@@ -1,6 +1,6 @@
 from components import Components 
+import numpy as np
 
-#TO DO: losowanie grafu eulerowskiego z zad 2 o parzystych stopniach wierzcholkow i jednej spojnej skladowej
 def euler(G, v, euler_list):
     euler_list.append(v)
     for u in range(len(G[v])):
