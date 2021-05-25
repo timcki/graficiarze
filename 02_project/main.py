@@ -108,10 +108,10 @@ def main():
 
     if arg[0].euler:
         parser2 = argparse.ArgumentParser()
-        parser2.add_argument('n', type=int, nargs='?', default=0)
+        parser2.add_argument('n', type=int, nargs='?', default=random.randint(4, 30))
 
         args = parser2.parse_args(arg[1])
-        test_find_euler_random(args.n)
+        find_euler_random(args.n)
         return
 
     if arg[0].regular:
@@ -185,16 +185,17 @@ def test_find_euler():
     plt.show()
 
 
-def test_find_euler_random(n):
+def find_euler_random(n):
     while True:
-        if n == 0:
-            n = random.randint(4, 12)
-        el = np.array([random.randint(0, 4)*2 for x in range(n)])
+        el = np.array([random.randint(0, 4)*2 for x in range(n+1)])
         try:
             g = Graph.from_sequence(el)
             choose_biggest_comp(g)
+            if g.adjacency.shape[0] != n: continue
             print(g.adjacency)
-            g.randomize_edges()
+            # Randomize graph
+            for i in range(el.shape[0]*3):
+                g.randomize_edges()
             print(g.adjacency)
 
             graph = nx.from_numpy_matrix(g.adjacency)
