@@ -15,7 +15,18 @@ def main():
     print(f"Wylosowano graf o {G.n} wierzchołkach:")
     print(G)
 
-    start = int(input(f'Podaj wierzchołek startowy od 0 do {G.n - 1}: '))
+    print(f"Podaj wierzchołek startowy od 0 do {G.n - 1}: ")
+    graph = nx.from_numpy_matrix(G.adj)
+    graph.edges(data=True)
+    plt.subplot(111)
+    pos=nx.circular_layout(graph)
+    nx.draw_networkx(graph, pos)
+    labels = nx.get_edge_attributes(graph, 'weight')
+    nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
+    plt.show()
+
+    #start = int(input(f'Podaj wierzchołek startowy od 0 do {G.n - 1}: '))
+    start = int(input())
     D = Dijkstra()
     D.do_dijkstra(G.adj, G.adj, start)
 
@@ -23,27 +34,22 @@ def main():
     for v in range(G.n):
         print(f'd({v}) = {D.ds[v]} ==> [{get_ps(v, D)}]')
 
-    print("Macierz odległości:")
+    print("\nMacierz odległości:")
     matrix = make_distance_matrix(G)
     print(matrix)
-    print("Centrum grafu:")
-    print(get_center(matrix))
-    print("Centrum minimax:")
-    print(get_minimax_center(matrix))
+    centr = get_center(matrix)
 
-    graph = nx.from_numpy_matrix(G.adj)
-    graph.edges(data=True)
-    plt.subplot(111)
-    #nx.draw(graph, with_labels=True, font_weight='bold')
-    pos=nx.circular_layout(graph)
-    nx.draw_networkx(graph, pos)
-    labels = nx.get_edge_attributes(graph, 'weight')
-    nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
-    plt.show()
+    print(f"\nCentrum grafu: {centr}")
+    print(f"Suma w centrum grafu: {sum(matrix[centr])}")
+    minimax = get_minimax_center(matrix)
 
-    print("Minimalne drzewo rozpinające:")
-    mst = prim(G)
+    print(f"\nCentrum minimax: {minimax}")
+    print(f"Odległość do najdalszego wierzchołka: {max(matrix[minimax])}")
+
+    print("\nMinimalne drzewo rozpinające:")
+    [mst, sum_mst] = prim(G)
     print(mst)
+    print(f"Suma wag krawędzi: {sum_mst}")
 
     plt.subplot(111)
     graph = nx.from_numpy_matrix(G.adj)

@@ -8,7 +8,6 @@ def make_distance_matrix(G):
         D = Dijkstra()
         D.do_dijkstra(G.adj, G.adj, row)
         matrix[row, :] = D.ds
-        pass
     return matrix
 
 def get_center(distance_matrix):

@@ -1,2 +1,2 @@
 Uruchomienie:
-python graph.py
+python set3.py
