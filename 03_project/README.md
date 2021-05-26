@@ -1,0 +1,2 @@
+Uruchomienie:
+python graph.py

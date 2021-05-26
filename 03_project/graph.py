@@ -5,6 +5,7 @@ import networkx as nx
 from components import Components
 from dijkstra import Dijkstra
 from centre import *
+from mst import prim
 
 class Graph:
     def __init__(self, n):
@@ -52,6 +53,7 @@ def main():
     print('Podaj liczbę wierzchołków: ')
     n = int(input())
     G = Graph(n)
+    print(f"Wylosowano graf o {G.n} wierzchołkach:")
     print(G.adj)
 
     print(f'Podaj wierzchołek startowy od 0 do {G.n - 1}: ')
@@ -77,8 +79,31 @@ def main():
     graph.edges(data=True)
     plt.subplot(111)
     #nx.draw(graph, with_labels=True, font_weight='bold')
-    pos=nx.spring_layout(graph)
+    pos=nx.circular_layout(graph)
     nx.draw_networkx(graph, pos)
+    labels = nx.get_edge_attributes(graph, 'weight')
+    nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
+    plt.show()
+
+    print("Minimalne drzewo rozpinające:")
+    mst = prim(G)
+    print(mst)
+
+    plt.subplot(111)
+    graph = nx.from_numpy_matrix(G.adj)
+    mst = nx.from_numpy_matrix(mst)
+
+    pos = nx.circular_layout(graph)
+
+    colors = []
+    for u,v in graph.edges():
+        if [u,v] not in mst.edges:
+            colors.append('b')
+        else:
+            colors.append('r')
+
+    graph.edges(data=True)
+    nx.draw(graph, pos, with_labels=True, edge_color=colors)
     labels = nx.get_edge_attributes(graph, 'weight')
     nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
     plt.show()
