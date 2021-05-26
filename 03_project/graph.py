@@ -1,12 +1,16 @@
 import random
+import numpy as np
+import matplotlib.pyplot as plt
+import networkx as nx
 from components import Components
 from dijkstra import Dijkstra
+from centre import *
 
 class Graph:
     def __init__(self, n):
         self.prob = 0.5
         self.n = n
-        self.adj = [[0 for x in range(self.n)] for y in range(self.n)]
+        self.adj = np.array([[0 for x in range(self.n)] for y in range(self.n)])
         self.rand_graph()
         self.biggest_comp = []
         self.choose_biggest_comp()
@@ -18,21 +22,23 @@ class Graph:
                 self.adj[i][j] = self.adj[j][i] = int(random.uniform(0, 1) <= self.prob)
 
     def choose_biggest_comp(self):
+        adjacency = self.adj.tolist()
         components = Components()
-        [comp, nr] = components.find_components(self.adj)
+        [comp, nr] = components.find_components(adjacency)
 
         for v in range(self.n):
             if comp[v] == components.max_component:
                 self.biggest_comp.append(v)
         for i in reversed(range(self.n)):
             if i not in self.biggest_comp:
-                self.adj.pop(i)
+                adjacency.pop(i)
             else:
                 for j in reversed(range(self.n)):
                     if j not in self.biggest_comp:
-                        self.adj[i].pop(j)
+                        adjacency[i].pop(j)
         
         self.n -= (self.n - len(self.biggest_comp))
+        self.adj = np.array(adjacency)
 
     def assign_weights(self):
         for i in range(self.n):
@@ -46,8 +52,7 @@ def main():
     print('Podaj liczbę wierzchołków: ')
     n = int(input())
     G = Graph(n)
-    for v in range(G.n):
-        print(G.adj[v])
+    print(G.adj)
 
     print(f'Podaj wierzchołek startowy od 0 do {G.n - 1}: ')
     start = int(input())
@@ -59,6 +64,25 @@ def main():
         print(f'd({v}) = {D.ds[v]} ==> [', end='')
         print_ps(v, D)
         print(']')
+
+    print("Macierz odległości:")
+    matrix = make_distance_matrix(G)
+    print(matrix)
+    print("Centrum grafu:")
+    print(get_center(matrix))
+    print("Centrum minimax:")
+    print(get_minimax_center(matrix))
+
+    graph = nx.from_numpy_matrix(G.adj)
+    graph.edges(data=True)
+    plt.subplot(111)
+    #nx.draw(graph, with_labels=True, font_weight='bold')
+    pos=nx.spring_layout(graph)
+    nx.draw_networkx(graph, pos)
+    labels = nx.get_edge_attributes(graph, 'weight')
+    nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
+    plt.show()
+
 
 def print_ps(v, D):
     if D.ps[v] != -1:
