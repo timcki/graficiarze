@@ -29,7 +29,7 @@ def print_m(G):
         for u in range(len(G[v])):
             print(G[v][u], end='')
         print()
-        
+
 def choose_biggest_comp(G):
     biggest_comp = []
     components = Components()
