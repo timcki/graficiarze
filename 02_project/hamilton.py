@@ -18,7 +18,7 @@ def find_hamilton(adj_list, actual, path=[]):
 def check_hamilton_cycle(adj_list):
     result = find_hamilton(adj_list, 1, [])
     if result is not None:
-        print(f"Hamilton's cycle: {result}")
+        print(f"Hamilton's cycle: {','.join([str(i) for i in result])}")
     else:
         print("There is no Hamilton's cycle in given Graph")
 
