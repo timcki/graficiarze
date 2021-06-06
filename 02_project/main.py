@@ -1,145 +1,111 @@
 #! /usr/bin/python3
 
 from graph import Graph, NotGraphicSequenceException
-
-import networkx as nx
-import numpy as np
-import random
-import matplotlib.pyplot as plt
 from components import Components
 from euler import euler, choose_biggest_comp, print_m
 from hamilton import *
 
-import argparse
+import networkx as nx
+import numpy as np
+import click
+import matplotlib.pyplot as plt
+
+import random
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-s', '--sequence', action='store_true',
-                       help='''Check if given sequence is graphic. Sequence 
-                        consisting of ints separated by spaces''')
-    group.add_argument('-r', '--randomize', action='store_true',
-                       help='''Randomize edges n times where n(int) is first parameter
-                        after -r/--randomize flag
-                        in graph given by the graphical sequence(ints separated by
-                        spaces)''')
-    group.add_argument('-c', '--components', action='store_true',
-                       help='''Find all connected  components
-                        in graph given by the graphical sequence(ints separated by
-                        spaces) and mark the greatest''')
-    group.add_argument('-e', '--euler', action='store_true',
-                       help='''Make random Euler's graph with given n(int) nodes or
-                        with random number of them if not specified''')
-    group.add_argument('-kr', '--regular', action='store_true',
-                       help='''Make k-regular graph with n nodes where n(int) is first
+@click.command()
+@click.option('-s', '--sequence', type=str,
+              help='''Check if sequence consisting of ints separated by commas
+              is graphic, if true generates a graph.''')
+@click.option('-f', '--filename', type=str,
+              help='Read adjacency matrix representing graph from file')
+@click.option('-r', '--randomize', type=int,
+              help='Randomize edges n (int) times')
+@click.option('-e', '--euler', 'euler_n', type=int,
+              help='''Create a randomized Euler graph with given n (int) nodes
+              or random n if unspecified''')
+@click.option('-kr', '--regular', nargs=2, type=int,
+              help='''Make k-regular graph with n nodes where n(int) is first
                         parameter and k(int) the second one''')
-    group.add_argument('-H', '--hamilton', action='store_true',
-                       help='''Check Hamilton's cycle exists in graph given by the
-                        graphical sequence(ints separated by spaces) and prints it''')
+@click.option('-H', '--hamilton', is_flag=True,
+              help='''Check if Hamilton cycle exists in given graph.
+              If true prints it''')
+@click.option('-c', '--components', is_flag=True,
+              help='''Find all connected  components in given graph
+              and mark the greatest''')
+def parse_graph(sequence, filename, randomize, euler_n,
+                regular, hamilton, components):
+    if euler_n is not None:
+        if euler_n == 0:
+            euler_n = random.randint(5, 30)
+        g = find_euler_random(euler_n)
+        print(g)
+        g.show()
 
-    arg = parser.parse_known_args()
+        euler_list = []
+        euler(g.adjacency.tolist(), 0, euler_list)
 
-    if arg[0].sequence:
-        parser2 = argparse.ArgumentParser()
-        parser2.add_argument('seq', type=int, nargs='+')
-
-        args = parser2.parse_args(arg[1])
-        try:
-            g = Graph.from_sequence(np.array(args.seq))
-            g.show()
-
-        except NotGraphicSequenceException:
-            print(f"Sequence:\n{args.seq}\nis not a graphic sequence")
-            return
+        print("Euler cycle:", ",".join([str(i) for i in euler_list]))
         return
 
-    if arg[0].randomize:
-        parser2 = argparse.ArgumentParser()
-        parser2.add_argument('n', type=int)
-        parser2.add_argument('seq', type=int, nargs='+')
-
-        args = parser2.parse_args(arg[1])
-        if args.n < 0:
-            print('Number of randomization n must be positive integer ')
-            return
-
-        try:
-            g = Graph.from_sequence(np.array(args.seq))
-        except NotGraphicSequenceException:
-            print(f"Sequence:\n{args.seq}\nis not a graphic sequence")
-            return
-
-        print("Randomized edges:")
-        for i in range(0, args.n):
-            p1, p2 = g.randomize_edges()
-            print(f"{p1}, {p2} => ({p1[0]}, {p2[1]}), ({p1[1]}, {p2[0]})")
-        print()
+    if regular != ():
+        g = gen_k_regular(regular[0], regular[1])
+        print(g)
         g.show()
         return
 
-    if arg[0].components:
+    if sequence is None and filename is None:
+        click.echo("Please specify at least one input form")
+        return
+    elif sequence is not None and filename is not None:
+        click.echo("Please specify only one input form")
+        return
+    else:
+        if sequence is not None:
+            g = Graph.from_sequence(np.array([int(i) for i in sequence.split(',')]))
+            if randomize is None:
+                print(g)
+                g.show()
+        else:
+            matrix = []
+            with open(filename) as f:
+                for line in f:
+                    if line != '\n':
+                        matrix.append([int(i) for i in line.strip().split(' ')])
+            g = Graph(np.array(matrix))
 
-        parser2 = argparse.ArgumentParser()
-        parser2.add_argument('seq', type=int, nargs='+')
+    if randomize is not None:
+        print("Randomized edges:")
+        for i in range(0, randomize):
+            p1, p2 = g.randomize_edges()
+            print(f"{p1}, {p2} => ({p1[0]}, {p2[1]}), ({p1[1]}, {p2[0]})")
+        print(g)
+        g.show()
 
-        args = parser2.parse_args(arg[1])
+    if components:
+        comp_lists, comp = find_biggest_comp(g)
 
-        try:
-            g = Graph.from_sequence(np.array(args.seq))
-        except NotGraphicSequenceException:
-            print(f"Sequence:\n{args.seq}\nis not a graphic sequence")
-            return
-
-        G = g.adjacency
-
-        components = Components()
-        [comp, nr] = components.find_components(G)
-
-        comp_lists = [[] for x in range(nr)]
-        for v in range(len(G)):
-            comp_lists[comp[v] - 1].append(v)
-
+        print(f"Biggest connected component {comp.max_component} has {comp.max_count} vertices: ")
         for count, item in enumerate(comp_lists):
-            print(count + 1, item)
-        print("Biggest connected component: " + str(components.max_component))
-        print("has " + str(components.max_count) + " vertices")
-        return
+            print(' ', f"{count + 1}: {item}")
+        print()
 
-    if arg[0].euler:
-        parser2 = argparse.ArgumentParser()
-        parser2.add_argument('n', type=int, nargs='?', default=random.randint(4, 30))
-
-        args = parser2.parse_args(arg[1])
-        find_euler_random(args.n)
-        return
-
-    if arg[0].regular:
-        print(5)
-        parser2 = argparse.ArgumentParser()
-        parser2.add_argument('n', type=int)
-        parser2.add_argument('k', type=int)
-
-        args = parser2.parse_args(arg[1])
-
-        gen_k_regular(args.n, args.k)
-        return
-
-    if arg[0].hamilton:
-        parser2 = argparse.ArgumentParser()
-        parser2.add_argument('seq', type=int, nargs='+')
-
-        args = parser2.parse_args(arg[1])
-        try:
-            g = Graph.from_sequence(np.array(args.seq))
-        except NotGraphicSequenceException:
-            print(f"Sequence:\n{args.seq}\nis not a graphic sequence")
-            return
+    if hamilton:
         adj_list = convert_matrix_to_adj_list(g.adjacency)
-        print(adj_list)
         check_hamilton_cycle(adj_list)
         return
 
+
+def find_biggest_comp(g: Graph):
+    G = g.adjacency
+
+    components = Components()
+    [comp, nr] = components.find_components(G)
+
+    comp_lists = [[] for x in range(nr)]
+    for v in range(len(G)):
+        comp_lists[comp[v] - 1].append(v)
+    return comp_lists, components
 
 
 def test_find_comp():
@@ -191,37 +157,27 @@ def find_euler_random(n):
         try:
             g = Graph.from_sequence(el)
             choose_biggest_comp(g)
-            if g.adjacency.shape[0] != n: continue
-            print(g.adjacency)
+            if g.adjacency.shape[0] != n:
+                continue
+
             # Randomize graph
             for i in range(el.shape[0]*3):
                 g.randomize_edges()
-            print(g.adjacency)
-
-            graph = nx.from_numpy_matrix(g.adjacency)
-            euler_list = []
-            euler(g.adjacency.tolist(), 0, euler_list)
-            print(euler_list)
-                
-            plt.subplot(111)
-            nx.draw(graph, with_labels=True, font_weight='bold')
-            plt.show()
-            break
+            return g
         except NotGraphicSequenceException:
             continue
 
-def gen_k_regular(n, k):
+
+def gen_k_regular(n, k) -> Graph:
     el = np.full(shape=n, fill_value=k, dtype=int)
-    print(el)
     try:
         g = Graph.from_sequence(el)
         for i in range(20):
             g.randomize_edges()
     except NotGraphicSequenceException:
         print('It is impossible to create k-regular graph with given parameters!')
-        return
-    g.show()
-    return
+        return None
+    return g
 
 
 def test_all():
@@ -240,8 +196,9 @@ def test_all():
     test_find_comp()
     test_find_euler()
 
-    g = {1: [2, 4, 5], 2: [1, 6, 5, 3], 3: [2, 7, 4], 4: [3, 1, 7, 6], 5: [2, 1, 8], 6: [4, 2, 8], 7: [4, 3, 8],
-         8: [7, 6, 5]}
+    g = {1: [2, 4, 5], 2: [1, 6, 5, 3], 3: [2, 7, 4],
+         4: [3, 1, 7, 6], 5: [2, 1, 8], 6: [4, 2, 8],
+         7: [4, 3, 8], 8: [7, 6, 5]}
     g2 = {1: [2, 4], 2: [1, 3, 4, 5], 3: [2, 5], 4: [1, 2, 5], 5: [2, 3, 4]}
     g3 = {1: [2, 4], 2: [1, 4, 5], 3: [5], 4: [1, 2, 5], 5: [2, 3, 4]}
 
@@ -252,14 +209,16 @@ def test_all():
     gen_k_regular(7, 2)
     gen_k_regular(4, 1)
 
+
 def convert_matrix_to_adj_list(adj):
-    l = {}
-    for i in range (0, len(adj[0])):
-        l[i + 1] = []
+    a_list = {}
+    for i in range(0, len(adj[0])):
+        a_list[i + 1] = []
         for j in range(0, len(adj[0])):
             if adj[i][j] == 1:
-                l[i + 1].append(j+1)
-    return l
+                a_list[i + 1].append(j+1)
+    return a_list
+
 
 if __name__ == '__main__':
-    main()
+    parse_graph()

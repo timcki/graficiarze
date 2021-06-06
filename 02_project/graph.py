@@ -6,6 +6,7 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
+
 class Graph:
     def __init__(self, adj: Any):
         self.adjacency = adj
@@ -14,8 +15,8 @@ class Graph:
     # Algorithms taken from here:
     # https://math.stackexchange.com/questions/1074651/check-if-sequence-is-graphic-8-8-7-7-6-6-4-3-2-1-1-1
     # https://mathworld.wolfram.com/GraphicSequence.html
-    @classmethod
     # Checks if graph can be created from given sequence
+    @classmethod
     def from_sequence(cls, seq: List[int]) -> Any:
 
         if sum(seq) % 2:
@@ -38,9 +39,8 @@ class Graph:
                 if seq_copy[i] < 0:
                     raise NotGraphicSequenceException()
 
-
-    @classmethod
     # Generate adjacency matrix from graphic sequence
+    @classmethod
     def adjacency_from_sequence(cls, seq: List[int]) -> Any:
 
         a_matrix = np.zeros(shape=(len(seq), len(seq)), dtype=np.int8)
@@ -59,7 +59,7 @@ class Graph:
 
         return cls(a_matrix)
 
-    # Randomize edges following the given rule: 
+    # Randomize edges following the given rule:
     # (a, b); (c, d) => (a, d); (b, c)
     def randomize_edges(self) -> Tuple[int, int]:
         num_it = 0
@@ -78,12 +78,13 @@ class Graph:
                     if self.adjacency[p2[0], p2[1]] == 1 and p2[0] != p2[1]:
                         break
 
-            if self.adjacency[p1[0], p2[1]] == 1 or self.adjacency[p1[1], p2[0]] == 1: continue
-            else: break
+            if self.adjacency[p1[0], p2[1]] == 1 or self.adjacency[p1[1], p2[0]] == 1:
+                continue
+            else:
+                break
 
         if num_it >= 20000:
             return p1, p2
-
 
         # Set new edge pair
         # (a, b); (c, d) => (a, d); (b, c)
@@ -96,14 +97,17 @@ class Graph:
 
     # Print adjacency matrix to terminal and draw graph with networkx
     def show(self):
-        adj = self.adjacency
-        print(adj)
-
-        graph = nx.from_numpy_matrix(adj)
+        graph = nx.from_numpy_matrix(self.adjacency)
         plt.subplot(111)
         nx.draw(graph, with_labels=True, font_weight='bold')
         plt.show()
 
+    def __str__(self):
+        s = "\n"
+        for row in self.adjacency:
+            s += ' '.join([str(i) for i in row])
+            s += '\n'
+        return s
 
 
 class NotGraphicSequenceException(Exception):
