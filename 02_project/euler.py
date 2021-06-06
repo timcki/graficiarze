@@ -1,6 +1,7 @@
 from components import Components 
 import numpy as np
 
+
 def euler(G, v, euler_list):
     euler_list.append(v)
     for u in range(len(G[v])):
@@ -10,7 +11,7 @@ def euler(G, v, euler_list):
                 G[v][u] = 0
                 G[u][v] = 0
                 euler(G, u, euler_list)
-        
+
 
 def bridge(G, v, u):
     G[v][u] = 0
@@ -24,11 +25,13 @@ def bridge(G, v, u):
     else:
         return False
 
+
 def print_m(G):
     for v in range(len(G)):
         for u in range(len(G[v])):
             print(G[v][u], end='')
         print()
+
 
 def choose_biggest_comp(G):
     biggest_comp = []

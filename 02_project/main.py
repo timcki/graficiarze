@@ -56,6 +56,10 @@ def parse_graph(sequence, filename, randomize, euler_n,
 
     if sequence is None and filename is None:
         click.echo("Please specify at least one input form")
+        return
+    elif sequence is not None and filename is not None:
+        click.echo("Please specify only one input form")
+        return
     else:
         if sequence is not None:
             g = Graph.from_sequence(np.array([int(i) for i in sequence.split(',')]))
@@ -63,38 +67,45 @@ def parse_graph(sequence, filename, randomize, euler_n,
                 print(g)
                 g.show()
         else:
-            print(filename)
+            matrix = []
+            with open(filename) as f:
+                for line in f:
+                    if line != '\n':
+                        matrix.append([int(i) for i in line.strip().split(' ')])
+            g = Graph(np.array(matrix))
 
     if randomize is not None:
-        print()
-        print(g)
         print("Randomized edges:")
         for i in range(0, randomize):
             p1, p2 = g.randomize_edges()
             print(f"{p1}, {p2} => ({p1[0]}, {p2[1]}), ({p1[1]}, {p2[0]})")
-        print()
         print(g)
         g.show()
 
     if components:
-        G = g.adjacency
+        comp_lists, comp = find_biggest_comp(g)
 
-        components = Components()
-        [comp, nr] = components.find_components(G)
-
-        comp_lists = [[] for x in range(nr)]
-        for v in range(len(G)):
-            comp_lists[comp[v] - 1].append(v)
-
-        print(f"Biggest connected component {components.max_component} has {components.max_count} vertices: ")
+        print(f"Biggest connected component {comp.max_component} has {comp.max_count} vertices: ")
         for count, item in enumerate(comp_lists):
-            print('\t', count + 1, item)
+            print(' ', f"{count + 1}: {item}")
         print()
 
     if hamilton:
         adj_list = convert_matrix_to_adj_list(g.adjacency)
         check_hamilton_cycle(adj_list)
         return
+
+
+def find_biggest_comp(g: Graph):
+    G = g.adjacency
+
+    components = Components()
+    [comp, nr] = components.find_components(G)
+
+    comp_lists = [[] for x in range(nr)]
+    for v in range(len(G)):
+        comp_lists[comp[v] - 1].append(v)
+    return comp_lists, components
 
 
 def test_find_comp():

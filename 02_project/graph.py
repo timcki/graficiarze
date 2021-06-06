@@ -103,7 +103,7 @@ class Graph:
         plt.show()
 
     def __str__(self):
-        s = ""
+        s = "\n"
         for row in self.adjacency:
             s += ' '.join([str(i) for i in row])
             s += '\n'
