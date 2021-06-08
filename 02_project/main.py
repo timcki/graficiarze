@@ -40,12 +40,12 @@ def parse_graph(sequence, filename, randomize, euler_n,
             euler_n = random.randint(5, 30)
         g = find_euler_random(euler_n)
         print(g)
-        g.show()
 
         euler_list = []
         euler(g.adjacency.tolist(), 0, euler_list)
 
         print("Euler cycle:", ",".join([str(i) for i in euler_list]))
+        g.show()
         return
 
     if regular != ():
