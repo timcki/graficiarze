@@ -23,7 +23,7 @@ import random
               help='Randomize edges n (int) times')
 @click.option('-e', '--euler', 'euler_n', type=int,
               help='''Create a randomized Euler graph with given n (int) nodes
-              or random n if unspecified''')
+              or random n if n=0''')
 @click.option('-kr', '--regular', nargs=2, type=int,
               help='''Make k-regular graph with n nodes where n(int) is first
                         parameter and k(int) the second one''')
@@ -50,6 +50,8 @@ def parse_graph(sequence, filename, randomize, euler_n,
 
     if regular != ():
         g = gen_k_regular(regular[0], regular[1])
+        if g is None:
+            return
         print(g)
         g.show()
         return
@@ -62,7 +64,13 @@ def parse_graph(sequence, filename, randomize, euler_n,
         return
     else:
         if sequence is not None:
-            g = Graph.from_sequence(np.array([int(i) for i in sequence.split(',')]))
+            try:
+                g = Graph.from_sequence(np.array([int(i) for i in sequence.split(',')]))
+            except NotGraphicSequenceException:
+                print("Please input a valid graphic sequence")
+                return
+
+            print(randomize)
             if randomize is None:
                 print(g)
                 g.show()
@@ -79,8 +87,9 @@ def parse_graph(sequence, filename, randomize, euler_n,
         for i in range(0, randomize):
             p1, p2 = g.randomize_edges()
             print(f"{p1}, {p2} => ({p1[0]}, {p2[1]}), ({p1[1]}, {p2[0]})")
-        print(g)
-        g.show()
+        if not components and not hamilton:
+            print(g)
+            g.show()
 
     if components:
         comp_lists, comp = find_biggest_comp(g)
@@ -89,11 +98,12 @@ def parse_graph(sequence, filename, randomize, euler_n,
         for count, item in enumerate(comp_lists):
             print(' ', f"{count + 1}: {item}")
         print()
+        g.show()
 
     if hamilton:
         adj_list = convert_matrix_to_adj_list(g.adjacency)
         check_hamilton_cycle(adj_list)
-        return
+        g.show()
 
 
 def find_biggest_comp(g: Graph):
