@@ -3,6 +3,7 @@ import click
 from ford_fulkerson import ford_fulkerson
 from graph import DiGraph
 
+
 @click.command()
 @click.option('-N', '--num-layers', 'layers', type=int, help='Number of layers in the randomly generated digraph')
 def main(layers):
@@ -29,6 +30,7 @@ def main(layers):
         [0, 0, 0, 0, 0, 0]
     ]
     print('Maksymalny przepływ: ', ford_fulkerson(G2, 0, 5))
+
 
 if __name__ == '__main__':
     main()
