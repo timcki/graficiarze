@@ -64,7 +64,7 @@ class DiGraph:
         print("Font size", (12*scaling_factor))
         labels = nx.get_edge_attributes(graph,'weight')
         nx.draw(graph, pos, with_labels=True, font_size=8, node_size=1000*scaling_factor, node_color='#a1b56c')
-        nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
+        nx.draw_networkx_edge_labels(graph, pos, font_size=6, edge_labels=labels)
         plt.show()
 
     def __str__(self):
