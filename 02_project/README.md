@@ -10,6 +10,8 @@
 
 Uruchomienie:
 Opcje -r, -H i -c działają tylko razem z opcją -f. np. python main.py -r 3 -f  "g.dat"
+Opcje -s, -e, -kr należy używać bez opcji -f.
+ 
 python main.py [OPTIONS]
 
 Options:
