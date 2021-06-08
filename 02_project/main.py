@@ -70,7 +70,7 @@ def parse_graph(sequence, filename, randomize, euler_n,
                 print("Please input a valid graphic sequence")
                 return
 
-            print(randomize)
+            #print(randomize)
             if randomize is None:
                 print(g)
                 g.show()
