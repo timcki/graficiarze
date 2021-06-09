@@ -11,6 +11,8 @@ class Graph:
     def __init__(self, n: int):
         self.size = n
         self.adj_matrix = np.zeros((n, n), dtype=int)
+        self.weights = np.random.randint(-5,11,(n,n))
+
         self.adj_list = self.gen_adj_list()
 
     def random_digraph(self, p: float) -> None:

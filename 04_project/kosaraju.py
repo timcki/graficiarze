@@ -22,7 +22,7 @@ def transpose(G):
                 GT[u][v] = 1
     return GT
 
-def kosaraju(G):
+def kosaraju(G, verbose = False):
     visited = [False for i in range(len(G))]
     stack = []
     for v in range(len(G)):
@@ -31,10 +31,18 @@ def kosaraju(G):
     GT = transpose(G)
     visited = [False for i in range(len(GT))]
     cn = 0
+
+    strongly_connected = False
+    if len(stack) == 0:
+        strongly_connected = True
+
     while len(stack) > 0:
         v = stack.pop()
         if visited[v] == False:
             cn += 1
-            print(f'{cn}: ', end='')
-            dfs_print(v, visited, GT)
-            print()
+            if verbose:
+                print(f'{cn}: ', end='')
+                dfs_print(v, visited, GT)
+                print()
+
+    return strongly_connected
