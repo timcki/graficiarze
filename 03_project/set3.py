@@ -8,7 +8,8 @@ from mst import prim
 
 def main():
     n = int(input('Podaj liczbę wierzchołków: '))
-    G = Graph(n)
+    prob = float(input('Podaj prawdopodobieństwo wystąpienia krawędzi: '))
+    G = Graph(n, prob)
     G.rand_graph()
     G.choose_biggest_comp()
     G.assign_weights()
@@ -25,7 +26,6 @@ def main():
     nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
     plt.show()
 
-    #start = int(input(f'Podaj wierzchołek startowy od 0 do {G.n - 1}: '))
     start = int(input())
     D = Dijkstra()
     D.do_dijkstra(G.adj, G.adj, start)
@@ -36,7 +36,13 @@ def main():
 
     print("\nMacierz odległości:")
     matrix = make_distance_matrix(G)
-    print(matrix)
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            print(int(matrix[i][j]), end=' ')
+            if int(matrix[i][j]) < 10:
+                print(end=' ')
+        print()
+    
     centr = get_center(matrix)
 
     print(f"\nCentrum grafu: {centr}")
@@ -48,7 +54,12 @@ def main():
 
     print("\nMinimalne drzewo rozpinające:")
     [mst, sum_mst] = prim(G)
-    print(mst)
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            print(int(matrix[i][j]), end=' ')
+            if int(matrix[i][j]) < 10:
+                print(end=' ')
+        print()
     print(f"Suma wag krawędzi: {sum_mst}")
 
     plt.subplot(111)

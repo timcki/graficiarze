@@ -7,8 +7,8 @@ from dijkstra import Dijkstra
 from centre import *
 
 class Graph:
-    def __init__(self, n):
-        self.prob = 0.5
+    def __init__(self, n, prob):
+        self.prob = prob
         self.n = n
         self.adj = np.zeros((n, n), dtype=int)
         self.biggest_comp = []
