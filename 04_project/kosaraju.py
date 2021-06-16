@@ -32,9 +32,6 @@ def kosaraju(G, verbose = False):
     visited = [False for i in range(len(GT))]
     cn = 0
 
-    strongly_connected = False
-    if len(stack) == 0:
-        strongly_connected = True
 
     while len(stack) > 0:
         v = stack.pop()
@@ -45,4 +42,4 @@ def kosaraju(G, verbose = False):
                 dfs_print(v, visited, GT)
                 print()
 
-    return strongly_connected
+    return cn == 1

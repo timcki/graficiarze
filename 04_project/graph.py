@@ -13,6 +13,11 @@ class Graph:
         self.adj_matrix = np.zeros((n, n), dtype=int)
         self.weights = np.random.randint(-5,11,(n,n))
 
+        i = 0
+        while i < n:
+            self.weights[i][i] = 0
+            i += 1
+
         self.adj_list = self.gen_adj_list()
 
     def random_digraph(self, p: float) -> None:
@@ -37,9 +42,20 @@ class Graph:
     def show(self):
         graph = nx.from_numpy_matrix(self.adj_matrix, create_using=nx.DiGraph)
         print(graph)
+
+        print("Weights: ")
+        s = "\n"
+        for row in self.weights:
+            s += " ".join(str(i) for i in row)
+            s += '\n'
+
+        print(s)
+
         plt.subplot(111)
         pos = nx.circular_layout(graph)
         nx.draw(graph, pos, with_labels=True, font_weight='bold')
+        # labels = nx.get_edge_attributes(graph, 'weight')
+        # nx.draw_networkx_edge_labels(graph, pos, edge_labels=labels)
         plt.show()
 
     def __str__(self):

@@ -13,10 +13,6 @@ def add_s(g):
         w_tmp[i] = np.insert(g.weights[i], number_of_vertices, 0)
         adj_tmp[i] = np.insert(g.adj_matrix[i], number_of_vertices, 0)
 
-    row = [0] * (number_of_vertices + 1)
-    row[number_of_vertices] = 0
-    w_tmp[number_of_vertices] = np.asarray(row)
-
     column = [1] * (number_of_vertices + 1)
     column[number_of_vertices] = 0
     adj_tmp[number_of_vertices] = np.asarray(column)
@@ -52,7 +48,7 @@ def johnson(g):
             if g.adj_matrix[u][v] == 1:
                 w_dashed[u][v] = g.weights[u][v] + ds[u] - ds[v]
 
-    d = [np.zeros(number_of_vertices) for _ in range(number_of_vertices)]
+    d = np.zeros((number_of_vertices, number_of_vertices))
 
     for u in range(number_of_vertices):
         dijkstra = Dijkstra()

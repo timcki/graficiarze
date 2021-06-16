@@ -19,11 +19,11 @@ def generate_connected_digraph(n, p):
     g = Graph(n)
     g.random_digraph(p)
 
-    strongly_connected = kosaraju(g.adj_matrix)
+    strongly_connected = kosaraju(g.adj_matrix, True)
     cycle_detected, ds, ps = bellman_ford(g, 0)
 
     i = 1
-    while strongly_connected or cycle_detected:
+    while strongly_connected is not True or cycle_detected:
         g = Graph(n)
         g.random_digraph(p)
 
@@ -31,7 +31,7 @@ def generate_connected_digraph(n, p):
         cycle_detected, ds, ps = bellman_ford(g, 0)
 
         i += 1
-        if i == 10000:
+        if i == 100000:
             raise ExceededMaxIterations(f"All {i} iterations did not generated strongly connected digraph")
 
     print(f"Number of iterations before generating strongly connected digraph: {i}")

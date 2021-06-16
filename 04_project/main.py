@@ -15,27 +15,32 @@ if __name__ == '__main__':
 
     g = Graph(nr_of_vertices)
     g.random_digraph(p)
+    print('\n1.Kodowanie digrafów; generowanie digrafów losowych G(n,p)')
     print(g)
     print_adj_list(g.adj_list.items())
-    print('\nSilnie spójne składowe: ')
+    print('\n2.Silnie spójne składowe: ')
     kosaraju(g.adj_matrix, True)
+
     g.show()
 
+    print("3. Silnie spójny digraf\n")
     try:
          g, ds, ps = generate_connected_digraph(nr_of_vertices, p )
     except ExceededMaxIterations as e:
-        print("***\n","A negative cycle has been found in the graph. Johson algoritm stopped.", "Exiting program...")
+        print("***\n","ExceededMaxIterations", "Exiting program...")
         exit(1)
 
+    g.gen_adj_list()
     print(g)
     print_adj_list(g.adj_list.items())
     print('\nSilnie spójne składowe: ')
     kosaraju(g.adj_matrix, True)
     g.show()
 
-    print("Shortest paths:", ds, '\n')
+    print("Najkrótsza ścieżka:", ds, '\n')
     print("Previous nodes in shortest paths:", ps, '\n')
 
+    print("4.Macierz odległości\n")
     print("Distance matrix from Johnson algorithm:")
     d = johnson(g)
     for x in d:
