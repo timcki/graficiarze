@@ -16,6 +16,7 @@ Program wykonuje wszystkie kroki automatycznie. Podczas wywołąnia możemy poda
         python main.py [n] [p]
 
 n - liczba wierzchołków, typ: int
+
 p - prawdopodobieństwo na występienie krawędzi, typ: float, zakres [0.0-1.0]
 
 przykładowe wywołanie:
