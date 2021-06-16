@@ -5,20 +5,21 @@
 - [x] Wykorzystując algorytmy z powyższych punktów wygenerować losowy silnie spójny digraf. Łukom tego digrafu przypisać losowe wagi będące liczbami całkowitymi z zakresu [−5, 10]. Zaimplementować algorytm Bellmana-Forda do znajdowania najkrótszych ścieżek od danego wierzchołka.
 - [x] Zaimplementować algorytm Johnsona do szukania odegłości pomiędzy wszystkimi parami wierzchołków na ważonym grafie skierowanym.
 
-##Sposób użycia
-#Instalcja
-pip insatall -r requirements.txt
+## Sposób użycia
+# Instalcja
 
-#Wywołanie
+        pip insatall -r requirements.txt
+
+# Wywołanie
 Program wykonuje wszystkie kroki automatycznie. Podczas wywołąnia możemy podac wartosci paramaetrów n i p
 
-python main.py [n] [p]
+        python main.py [n] [p]
 
-n liczba wierzchołków typ: int
-p prawdopodobieństwo na występienie krawędzi typ: float zakres [0.0-1.0]
+n - liczba wierzchołków, typ: int
+p - prawdopodobieństwo na występienie krawędzi, typ: float, zakres [0.0-1.0]
 
 przykładowe wywołanie:
 
-python main.py 6 0.4
+        python main.py 6 0.4
 
 
