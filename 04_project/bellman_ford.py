@@ -16,25 +16,39 @@ def relax(u, v, w, d_s, p_s):
 
 
 def generate_connected_digraph(n, p):
+    print("To może trochę potrwać...")
     g = Graph(n)
     g.random_digraph(p)
 
-    strongly_connected = kosaraju(g.adj_matrix, True)
-    cycle_detected, ds, ps = bellman_ford(g, 0)
+    strongly_connected = kosaraju(g.adj_matrix)
+    #g.show()
+    #cycle_detected, ds, ps = bellman_ford(g, 0)
 
     i = 1
-    while strongly_connected is not True or cycle_detected:
+    while strongly_connected is not True:
         g = Graph(n)
         g.random_digraph(p)
+        strongly_connected = kosaraju(g.adj_matrix, True)
 
-        strongly_connected = kosaraju(g.adj_matrix)
-        cycle_detected, ds, ps = bellman_ford(g, 0)
 
+        #g.show()
+        # if cycle_detected:
+        #     print('Negative cycle detected')
         i += 1
-        if i == 100000:
+        if i == 200000:
             raise ExceededMaxIterations(f"All {i} iterations did not generated strongly connected digraph")
-
     print(f"Number of iterations before generating strongly connected digraph: {i}")
+
+    cycle_detected, ds, ps = bellman_ford(g, 0)
+    i = 1
+    while cycle_detected:
+        g.rand_weight()
+        i += 1
+        if i == 200000:
+            raise ExceededMaxIterations(f"All {i} iterations did not generated  without cycle")
+
+        cycle_detected, ds, ps = bellman_ford(g, 0)
+    print(f"Number of iterations before generating strongly connected digraph without cycles with weight less than 0: {i}")
     return g, ds, ps
 
 
@@ -45,6 +59,7 @@ def bellman_ford(g, start):
     p_s = np.full(number_of_vertices, np.nan)
     d_s[start] = 0
     adj_list = g.gen_adj_list()
+
 
     for i in range(number_of_vertices - 1):
         for u in range(number_of_vertices):

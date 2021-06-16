@@ -32,27 +32,27 @@ def add_s(g):
 
 def johnson(g):
     """Function generating distance matrix for weighted graph"""
-    number_of_vertices, _ = g.adj_matrix.shape
+    adj_matrix = g.adj_matrix
+    number_of_vertices = g.size
     add_s(g)
 
-    w_dashed = np.zeros((number_of_vertices + 1, number_of_vertices + 1))
+    w = np.zeros((number_of_vertices + 1, number_of_vertices + 1))
 
-    cycle_detected, ds, ps = bellman_ford(g, number_of_vertices)
+    cycle_detected, ds, _ = bellman_ford(g, number_of_vertices)
     # print("***\n", ds, "***\n")
 
     if cycle_detected:
         raise ValueError('A negative cycle has been found in the graph. Johson algoritm stopped.')
 
     for u in range(number_of_vertices + 1):
+
         for v in range(number_of_vertices + 1):
-            if g.adj_matrix[u][v] == 1:
-                w_dashed[u][v] = g.weights[u][v] + ds[u] - ds[v]
+            w[u][v] = g.weights[u][v] + ds[u] - ds[v]
 
     d = np.zeros((number_of_vertices, number_of_vertices))
-
     for u in range(number_of_vertices):
         dijkstra = Dijkstra()
-        dijkstra.do_dijkstra(g.adj_matrix, g.adj_matrix, u+1)
+        dijkstra.do_dijkstra(adj_matrix, w, u)
         distance = dijkstra.ds
 
         for v in range(number_of_vertices):

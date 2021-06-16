@@ -5,13 +5,15 @@ from graph import Graph
 from johnson import *
 from bellman_ford import *
 
+import sys
+
 def print_adj_list(adj_list):
     for k, v in adj_list:
         print(f"{k}: {v}")
 
 if __name__ == '__main__':
-    nr_of_vertices = 3
-    p = 0.5
+    nr_of_vertices = int(sys.argv[1])#6
+    p = float(sys.argv[2]) #0.4
 
     g = Graph(nr_of_vertices)
     g.random_digraph(p)
@@ -25,9 +27,9 @@ if __name__ == '__main__':
 
     print("3. Silnie spójny digraf\n")
     try:
-         g, ds, ps = generate_connected_digraph(nr_of_vertices, p )
+         g, ds, ps = generate_connected_digraph(nr_of_vertices, p)
     except ExceededMaxIterations as e:
-        print("***\n","ExceededMaxIterations", "Exiting program...")
+        print("Wykryto cykl o ujemnej wadze lub digraf jest niespójny\n","Przekroczono maksymalną liczbe losowań", "Kończenie programu ...")
         exit(1)
 
     g.gen_adj_list()
@@ -37,8 +39,8 @@ if __name__ == '__main__':
     kosaraju(g.adj_matrix, True)
     g.show()
 
-    print("Najkrótsza ścieżka:", ds, '\n')
-    print("Previous nodes in shortest paths:", ps, '\n')
+    print(f" Koszt najkrótszych ścieżek do kolejnych wierzchołków:{ds.astype(int)}\n")
+    #print("Previous nodes in shortest paths:", ps, '\n')
 
     print("4.Macierz odległości\n")
     print("Distance matrix from Johnson algorithm:")
